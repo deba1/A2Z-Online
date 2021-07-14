@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using System;
 
 namespace Domain.Entities
 {
-    class User : BaseEntity
+    public class User : BaseEntity
     {
         public string Name { get; set; }
         public string Email { get; set; }
@@ -11,5 +12,6 @@ namespace Domain.Entities
         public string Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string MobileNo { get; set; }
+        public string Address { get; set; }
     }
 }

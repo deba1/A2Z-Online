@@ -1,6 +1,8 @@
-﻿namespace Domain.Common
+﻿using System;
+
+namespace Domain.Common
 {
-    class BaseEntity
+    public class BaseEntity
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }

@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using System.Collections.Generic;
 
 namespace Domain.Entities
 {
-    class Category : CommonEntity
+    public class Category : CommonEntity
     {
         public string Title { get; set; }
         public string Thumbnail { get; set; }

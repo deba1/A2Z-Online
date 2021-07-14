@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using System.Collections.Generic;
 
 namespace Domain.Entities
 {
-    class Product : BaseEntity
+    public class Product : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -12,11 +13,9 @@ namespace Domain.Entities
         public string AdditionalFields { get; set; }
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
-
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<Inventory> Inventories { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<Inventory> Inventories { get; set; }   
     }
 }

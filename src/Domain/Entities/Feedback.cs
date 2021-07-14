@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    class Feedback : BaseEntity
+    public class Feedback : BaseEntity
     {
         public int UserId { get; set; }
         public int ProductId { get; set; }

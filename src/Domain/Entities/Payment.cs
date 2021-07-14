@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using System;
 
 namespace Domain.Entities
 {
-    class Payment : BaseEntity
+    public class Payment : BaseEntity
     {
         public int OrderId { get; set; }
         public string Method { get; set; }
