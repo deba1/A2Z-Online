@@ -12,8 +12,7 @@ namespace Domain.Entities
         public int Quantity { get; set; }
 
         [Required]
-        [RegularExpression(@"^\d+\.\d{0,2}$")]
-        [Range(0, 9999999999999999.99, ErrorMessage = "Invalid Unit Price; Max 18 digits")]
+        [RegularExpression(@"^\d{1,18}(\.\d{1,2}){0,1}$")]
         public decimal UnitPrice { get; set; }
         public virtual Product Product { get; set; }
     }

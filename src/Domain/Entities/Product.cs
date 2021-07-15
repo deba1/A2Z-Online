@@ -17,11 +17,7 @@ namespace Domain.Entities
 
         [Required]
         public string Thumbnail { get; set; }
-
-        [Required]
         public string Images { get; set; }
-
-        [Required]
         public string AdditionalFields { get; set; }
 
         [Required]

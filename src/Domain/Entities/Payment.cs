@@ -13,8 +13,7 @@ namespace Domain.Entities
         public string Method { get; set; }
 
         [Required]
-        [RegularExpression(@"^\d+\.\d{0,2}$")]
-        [Range(0, 9999999999999999.99, ErrorMessage = "Invalid Total Amount; Max 18 digits")]
+        [RegularExpression(@"^\d{1,18}(\.\d{1,2}){0,1}$")]
         public decimal TotalAmount { get; set; }
 
         [Required]

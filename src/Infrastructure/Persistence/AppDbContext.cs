@@ -10,16 +10,16 @@ namespace Infrastructure.Persistence
 
         }
 
-        public DbSet<Brand> Brand { get; set; }
-        public DbSet<Category> Category { get; set; }
-        public DbSet<Feedback> Feedback { get; set; }
-        public DbSet<GlobalConfiguration> GlobalConfiguration { get; set; }
-        public DbSet<Inventory> Inventory { get; set; }
-        public DbSet<Order> Order { get; set; }
-        public DbSet<OrderItem> OrderItem { get; set; }
-        public DbSet<Payment> Payment { get; set; }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<User> User { get; set; }
-        public DbSet<UserCredential> UserCredential { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<GlobalConfiguration> GlobalConfigurations { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserCredential> UserCredentials { get; set; }
     }
 }

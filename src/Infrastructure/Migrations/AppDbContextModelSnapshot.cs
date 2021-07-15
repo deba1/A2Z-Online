@@ -51,7 +51,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brand");
+                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
@@ -91,7 +91,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CategoryParentId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Domain.Entities.Feedback", b =>
@@ -101,8 +101,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Comment")
+                    b.Property<string>("Age")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -126,7 +129,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedback");
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("Domain.Entities.GlobalConfiguration", b =>
@@ -152,7 +155,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GlobalConfiguration");
+                    b.ToTable("GlobalConfigurations");
                 });
 
             modelBuilder.Entity("Domain.Entities.Inventory", b =>
@@ -181,7 +184,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Inventory");
+                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -224,7 +227,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderItem", b =>
@@ -258,7 +261,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.Payment", b =>
@@ -307,7 +310,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -318,7 +321,6 @@ namespace Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AdditionalFields")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BrandId")
@@ -335,7 +337,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Images")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -358,7 +359,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -406,7 +407,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserCredential", b =>
@@ -444,7 +445,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCredential");
+                    b.ToTable("UserCredentials");
                 });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>

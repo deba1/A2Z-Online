@@ -12,9 +12,9 @@ namespace Domain.Entities
         public int ProductId { get; set; }
 
         [Required]
+        [Range(1, 5, ErrorMessage = "Score Must be between 1 to 5")]
+        public string Age { get; set; }
         public int Score { get; set; }
-
-        [Required]
         public string Comment { get; set; }
         public virtual Product Product { get; set; }
         public virtual User User { get; set; }
