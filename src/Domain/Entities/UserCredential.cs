@@ -7,8 +7,7 @@ namespace Domain.Entities
     public class UserCredential : BaseEntity
     {
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$",
-        ErrorMessage = "Invalid email format")]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Persistence;
+using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,9 @@ namespace Infrastructure
                 b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
             services.BuildServiceProvider().GetService<AppDbContext>().Database.Migrate(); // Do migration automatically.
+
+            // Adding repository services.
+            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             return services;
         }
