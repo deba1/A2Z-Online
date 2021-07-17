@@ -1,4 +1,5 @@
-﻿using Infrastructure.Repository;
+﻿using Domain.Common;
+using Infrastructure.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace API.Managers
         Task<int> Remove(T entity);
     }
 
-    public class BaseManager<T> : IBaseManager<T> where T : class
+    public class BaseManager<T> : IBaseManager<T> where T : BaseEntity
     {
         private readonly IBaseRepository<T> _baseRepository;
 
