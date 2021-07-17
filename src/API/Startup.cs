@@ -1,3 +1,4 @@
+using API.Managers;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration); // Adding Infrastructure services.
+            services.AddTransient(typeof(IBaseManager<>), typeof(BaseManager<>));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
