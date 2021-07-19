@@ -2,7 +2,7 @@
 
 namespace Application.ViewModels
 {
-    public class BrandViewModel
+    public class BrandDTO
     {
         [Required]
         public string Name { get; set; }

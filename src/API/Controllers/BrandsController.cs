@@ -3,7 +3,6 @@ using Application.ViewModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,102 +20,67 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<Brand>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Brand>>> GetAll()
         {
-            try
-            {
-                return Ok(await _brandManager.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return (BadRequest(ex));
-            }
+            return Ok(await _brandManager.GetAll());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Brand>> GetById(int id)
         {
-            try
-            {
-                var brand = await _brandManager.GetById(id);
+            var brand = await _brandManager.GetById(id);
 
-                if (brand == null)
-                {
-                    return NoContent();
-                }
-
-                return Ok(brand);
-            }
-            catch (Exception ex)
+            if (brand == null)
             {
-                return (BadRequest(ex));
+                return NoContent();
             }
+
+            return Ok(brand);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Brand>> Add([FromBody] BrandViewModel brandViewModel)
+        public async Task<ActionResult<Brand>> Add([FromBody] BrandDTO brandDTO)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var brand = _mapper.Map<Brand>(brandViewModel);
-
-                await _brandManager.Add(brand);
-
-                return CreatedAtAction(nameof(GetById), new { id = brand.Id }, brand);
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                return (BadRequest(ex));
-            }
+
+            var brand = _mapper.Map<Brand>(brandDTO);
+
+            await _brandManager.Add(brand);
+
+            return CreatedAtAction(nameof(GetById), new { id = brand.Id }, brand);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Brand>> Update([FromRoute] int id, [FromBody] BrandViewModel brandViewModel)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] BrandDTO brandDTO)
         {
-            try
+            var brand = await _brandManager.GetById(id);
+
+            if (brand == null)
             {
-                var brand = await _brandManager.GetById(id);
-
-                if (brand == null)
-                {
-                    return NoContent();
-                }
-
-                brand = _mapper.Map(brandViewModel, brand);
-                await _brandManager.Update(brand);
-
-                return Ok(brand);
+                return NotFound();
             }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            brand = _mapper.Map(brandDTO, brand);
+            await _brandManager.Update(brand);
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Remove(int id)
+        public async Task<IActionResult> Remove(int id)
         {
-            try
-            {
-                var brand = await _brandManager.GetById(id);
+            var brand = await _brandManager.GetById(id);
 
-                if(brand != null)
-                {
-                    await _brandManager.Remove(brand);
-                    return NoContent();
-                }
-
-                return NotFound();
-            }
-            catch (Exception ex)
+            if (brand != null)
             {
-                return BadRequest(ex);
+                await _brandManager.Remove(brand);
+                return NoContent();
             }
+
+            return NotFound();
         }
     }
 }
