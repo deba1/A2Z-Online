@@ -5,6 +5,7 @@ namespace API.Managers
 {
     public interface IBrandManager : IBaseManager<Brand>
     {
+
     }
 
     public class BrandManager : BaseManager<Brand>, IBrandManager

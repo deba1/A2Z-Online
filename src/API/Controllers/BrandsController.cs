@@ -1,5 +1,5 @@
 ﻿using API.Managers;
-using Application.ViewModels;
+using Application.DTOs;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +32,7 @@ namespace API.Controllers
 
             if (brand == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
             return Ok(brand);
@@ -47,7 +47,6 @@ namespace API.Controllers
             }
 
             var brand = _mapper.Map<Brand>(brandDTO);
-
             await _brandManager.Add(brand);
 
             return CreatedAtAction(nameof(GetById), new { id = brand.Id }, brand);

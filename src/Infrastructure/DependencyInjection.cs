@@ -19,6 +19,7 @@ namespace Infrastructure
             // Adding repository services.
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
 
             return services;
         }
