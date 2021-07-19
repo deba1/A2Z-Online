@@ -8,8 +8,8 @@ namespace API.MappingConfigurations
     {
         public BrandProfile()
         {
-            CreateMap<BrandViewModel, Brand>();
-            CreateMap<Brand, BrandViewModel>();
+            CreateMap<BrandDTO, Brand>();
+            CreateMap<Brand, BrandDTO>();
         }
     }
 }
