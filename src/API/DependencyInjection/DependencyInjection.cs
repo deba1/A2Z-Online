@@ -10,6 +10,7 @@ namespace API.DependencyInjection
             // Adding manager services
             services.AddTransient(typeof(IBaseManager<>), typeof(BaseManager<>));
             services.AddTransient<IBrandManager, BrandManager>();
+            services.AddTransient<ICategoryManager, CategoryManager>();
 
             services.AddAutoMapper(typeof(Startup));
 
