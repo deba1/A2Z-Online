@@ -19,6 +19,8 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        #region CRUD
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetAll()
         {
@@ -30,12 +32,7 @@ namespace API.Controllers
         {
             var category = await _categoryManager.GetById(id);
 
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(category);
+            return (category == null) ? NotFound() : Ok(category);
         }
 
         [HttpPost]
@@ -81,5 +78,7 @@ namespace API.Controllers
 
             return NotFound();
         }
+
+        #endregion 
     }
 }
