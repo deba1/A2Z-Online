@@ -20,6 +20,7 @@ namespace Infrastructure
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
 
             return services;
         }

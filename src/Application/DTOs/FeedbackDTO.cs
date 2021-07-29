@@ -1,9 +1,9 @@
-﻿using Domain.Common;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Entities
+namespace Application.DTOs
 {
-    public class Feedback : BaseEntity
+    public class FeedbackDTO
     {
         [Required]
         public int UserId { get; set; }
@@ -15,7 +15,5 @@ namespace Domain.Entities
         [Range(1, 5, ErrorMessage = "Score Must be between 1 to 5")]
         public int Score { get; set; }
         public string Comment { get; set; }
-        public virtual Product Product { get; set; }
-        public virtual User User { get; set; }
     }
 }

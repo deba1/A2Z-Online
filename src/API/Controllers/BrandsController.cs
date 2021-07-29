@@ -19,6 +19,8 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        #region CRUD
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Brand>>> GetAll()
         {
@@ -30,12 +32,7 @@ namespace API.Controllers
         {
             var brand = await _brandManager.GetById(id);
 
-            if (brand == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(brand);
+            return (brand == null) ? NotFound() : Ok(brand);
         }
 
         [HttpPost]
@@ -81,5 +78,7 @@ namespace API.Controllers
 
             return NotFound();
         }
+
+        #endregion 
     }
 }
