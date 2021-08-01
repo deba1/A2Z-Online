@@ -1,4 +1,5 @@
 using API.DependencyInjection;
+using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,7 @@ namespace API
         {
             services.AddInfrastructure(Configuration); // Adding Infrastructure services.
             services.AddAPI();
+            services.AddApplicationServices(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -45,6 +47,7 @@ namespace API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
