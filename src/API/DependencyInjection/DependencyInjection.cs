@@ -15,6 +15,9 @@ namespace API.DependencyInjection
             services.AddTransient<IInventoryManager, InventoryManager>();
             services.AddTransient<IOrderManager, OrderManager>();
             services.AddTransient<IProductManager, ProductManager>();
+            services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IPaymentManager, PaymentManager>();
+            services.AddTransient<IGlobalConfigurationManager, GlobalConfigurationManager>();
 
             services.AddAutoMapper(typeof(Startup));
 
