@@ -3,6 +3,7 @@ using Application.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,18 @@ namespace Application.Extensions
                     {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         context.Response.ContentType = "application/json";
-                        await context.Response.WriteAsync(new ErrorDetailsDTO
+
+                        string errorMessage = contextFeature.Error.GetType() == typeof(BaseException) ? contextFeature.Error.Message : "Internal Server Error.";
+
+                        var errorResponse = new ErrorDetailsDTO
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = contextFeature.Error.GetType() == typeof(BaseException) ? contextFeature.Error.Message : "Internal Server Error."
-                        }.ToString()
-                        );
+                            Message = errorMessage
+                        };
+
+                        Log.Error(contextFeature.Error, contextFeature.Error.Message);
+
+                        await context.Response.WriteAsync(errorResponse.ToString());
                     }
                 });
             });
