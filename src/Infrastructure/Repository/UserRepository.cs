@@ -12,7 +12,7 @@ namespace Infrastructure.Repository
     {
         private readonly AppDbContext _context;
 
-        public UserReposity(AppDbContext context): base(context)
+        public UserReposity(AppDbContext context) : base(context)
         {
             _context = context;
         }
