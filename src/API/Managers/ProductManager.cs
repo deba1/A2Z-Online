@@ -16,6 +16,5 @@ namespace API.Managers
         {
             _productRepository = productRepository;
         }
-
     }
 }

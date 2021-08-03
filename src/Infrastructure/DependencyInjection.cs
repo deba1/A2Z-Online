@@ -24,6 +24,9 @@ namespace Infrastructure
             services.AddTransient<IInventoryRepository, InventoryRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IUserRepository, UserReposity>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
 
             return services;
         }
