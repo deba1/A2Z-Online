@@ -39,12 +39,25 @@ namespace API.Controllers
         public async Task<IActionResult> Update([FromRoute] int id, UserDTO userDTO)
         {
             var user = await _userManager.GetById(id);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound();
             }
             user = _mapper.Map(userDTO, user);
             await _userManager.Update(user);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var user = await _userManager.GetById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            await _userManager.Remove(user);
 
             return NoContent();
         }
