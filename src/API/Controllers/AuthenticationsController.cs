@@ -25,7 +25,8 @@ namespace API.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<User>> Register(RegisterDTO registerDTO)
         {
-            return Ok(await _authenticationManager.ResiterUser(registerDTO));
+            var result = await _authenticationManager.ResiterUser(registerDTO);
+            return (result != null) ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Registration failed"));
         }
 
         [AllowAnonymous]

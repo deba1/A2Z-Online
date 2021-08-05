@@ -9,7 +9,7 @@ namespace Infrastructure.Repository
 {
     public interface IUserCredentialRepository : IBaseRepository<UserCredential>
     {
-        Task<UserCredential> LoginUser(LoginRequestDTO loginRequestDTO);
+        Task<UserCredential> LoginUser(string email);
         Task<bool> ChangePassword(int id, string password);
     }
 
@@ -22,9 +22,9 @@ namespace Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<UserCredential> LoginUser(LoginRequestDTO loginRequestDTO)
+        public async Task<UserCredential> LoginUser(string email)
         {
-            return await DbTable.Where(x => x.Email.Equals(loginRequestDTO.Email) && x.Password.Equals(loginRequestDTO.Password)).Include(l => l.User).FirstOrDefaultAsync();
+            return await DbTable.Where(x => x.Email.Equals(email)).Include(l => l.User).FirstOrDefaultAsync();
         }
 
         #region Change Password

@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Transaction;
 using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Threading.Tasks;
 
 namespace API.Managers
@@ -22,21 +23,34 @@ namespace API.Managers
         private readonly IMapper _mapper;
         private readonly IDatabaseTransaction _databaseTransaction;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IEncryptionService _encryptionService;
 
-        public AuthenticationManager(IUserCredentialManager userCredentialManager, IUserManager userManager, IMapper mapper, IDatabaseTransaction databaseTransaction, IAuthenticationService authenticationService)
+        public AuthenticationManager(
+            IUserCredentialManager userCredentialManager,
+            IUserManager userManager, IMapper mapper,
+            IDatabaseTransaction databaseTransaction,
+            IAuthenticationService authenticationService,
+            IEncryptionService encryptionService
+            )
         {
             _userCredentialManager = userCredentialManager;
             _userManager = userManager;
             _mapper = mapper;
             _databaseTransaction = databaseTransaction;
             _authenticationService = authenticationService;
+            _encryptionService = encryptionService;
         }
 
         public async Task<LoginResponseDTO> LoginUser(LoginRequestDTO loginRequestDTO)
         {
-            var userCredential = await _userCredentialManager.LoginUser(loginRequestDTO);
+            var userCredential = await _userCredentialManager.LoginUser(loginRequestDTO.Email);
 
-            if(userCredential == null)
+            if (userCredential == null)
+            {
+                return null;
+            }
+
+            if (!_encryptionService.VerifyHash(userCredential.Password, loginRequestDTO.Password))
             {
                 return null;
             }
@@ -52,6 +66,7 @@ namespace API.Managers
 
         public async Task<User> ResiterUser(RegisterDTO registerDTO)
         {
+            registerDTO.Password = _encryptionService.GenerateHash(registerDTO.Password);
             var user = _mapper.Map<User>(registerDTO);
 
             using IDbContextTransaction transaction = _databaseTransaction.Transaction;
@@ -70,7 +85,7 @@ namespace API.Managers
             catch
             {
                 await transaction.RollbackAsync();
-                throw;
+                return null;
             }
         }
 
