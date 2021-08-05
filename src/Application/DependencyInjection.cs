@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Services;
+using Application.Services.EncryptionServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ namespace Application
 
             // Adding application services.
             services.AddTransient<IAuthenticationService, JwtService>();
+            services.AddTransient<ISha256EncryptionService, Sha256EncryptionService>();
 
             return services;
         }
