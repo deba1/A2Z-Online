@@ -1,7 +1,8 @@
 ﻿using API.Managers;
+using Application.DTOs.ResponseDTOs;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace API.DependencyInjection
+namespace API
 {
     public static class DependencyInjection
     {
@@ -18,6 +19,9 @@ namespace API.DependencyInjection
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IPaymentManager, PaymentManager>();
             services.AddTransient<IGlobalConfigurationManager, GlobalConfigurationManager>();
+            services.AddTransient<IUserCredentialManager, UserCredentialManager>();
+            services.AddTransient<IAuthenticationManager, AuthenticationManager>();
+            services.AddTransient<IApiResponseDTO, ApiResponseDTO>();
 
             services.AddAutoMapper(typeof(Startup));
 

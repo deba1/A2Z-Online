@@ -1,10 +1,12 @@
-﻿using System.Security.Claims;
+﻿using Domain.Entities;
+using System.Security.Claims;
 
 namespace Application.Interfaces
 {
     public interface IAuthenticationService
     {
-        string CreateToken(Claim[] claim);
-        string VerifyToken(string token);
+        Claim[] Claims { get; set; }
+        string CreateToken(User user);
+        int? VerifyToken(string token);
     }
 }

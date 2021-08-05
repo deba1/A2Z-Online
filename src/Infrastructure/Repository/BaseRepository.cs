@@ -26,7 +26,7 @@ namespace Infrastructure.Repository
         /// <summary>
         /// Gets the DbSet of entity by setting it to context.
         /// </summary>
-        private DbSet<T> DbTable
+        protected DbSet<T> DbTable
         {
             get
             {

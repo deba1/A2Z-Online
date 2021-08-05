@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Services.JwtServices;
+using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -17,17 +18,30 @@ namespace Application.Services
 
         }
 
-        public string CreateToken(Claim[] claim)
+        public Claim[] Claims { get; set; }
+
+        private Claim[] GenerateClaims(User user)
+        {
+            return Claims = new[] {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+        }
+
+        public string CreateToken(User user)
         {
             try
             {
+                GenerateClaims(user);
                 var token = new JwtSecurityToken(
                     issuer: Issuer,
                     audience: Audience,
                     expires: DateTime.UtcNow.AddMinutes(ValidationTime), // Token validation time.
-                    claims: claim,
+                    claims: Claims,
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key)), SecurityAlgorithms.HmacSha256)
                     );
+
                 return new JwtSecurityTokenHandler().WriteToken(token);
             }
             catch (Exception)
@@ -36,7 +50,7 @@ namespace Application.Services
             }
         }
 
-        public string VerifyToken(string token)
+        public int? VerifyToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -56,10 +70,8 @@ namespace Application.Services
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = jwtToken.Claims.FirstOrDefault(x => x.Type == "userId").Value;
 
-                // Return user id from JWT token if validation successful
-                return userId;
+                return Convert.ToInt32(jwtToken.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.NameIdentifier)).Value);
             }
             catch (Exception)
             {
