@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Serilog.Ui.MsSqlServerProvider;
+using Serilog.Ui.Web;
 
 namespace API
 {
@@ -56,6 +58,7 @@ namespace API
                     { jwtSecurityScheme, Array.Empty<string>() }
                 });
             });
+            services.AddSerilogUi(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), "SeriLog"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +79,8 @@ namespace API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSerilogUi();
 
             app.UseEndpoints(endpoints =>
             {
