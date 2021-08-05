@@ -36,7 +36,7 @@ namespace Application
 
             // Adding application services.
             services.AddTransient<IAuthenticationService, JwtService>();
-            services.AddTransient<ISha256EncryptionService, Sha256EncryptionService>();
+            services.AddTransient<IEncryptionService, Sha256EncryptionService>();
 
             return services;
         }
