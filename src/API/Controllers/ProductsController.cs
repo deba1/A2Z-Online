@@ -1,11 +1,7 @@
-﻿using API.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -13,38 +9,35 @@ namespace API.Controllers
     public class ProductsController : BaseController
     {
         private readonly IProductManager _productManager;
-        private readonly IMapper _mapper;
 
-        public ProductsController(IProductManager productManager, IMapper mapper)
+        public ProductsController(IProductManager productManager)
         {
             _productManager = productManager;
-            _mapper = mapper;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
             return Ok(await _productManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetById(int id)
+        public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
             var product = await _productManager.GetById(id);
             return (product == null) ? NotFound() : Ok(product);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> Add([FromBody] ProductDTO productDTO)
+        public async Task<ActionResult<ProductDTO>> Add([FromBody] ProductDTO productDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var product = _mapper.Map<Product>(productDTO);
-            await _productManager.Add(product);
+            var product = await _productManager.Add(productDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
@@ -57,8 +50,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            product = _mapper.Map(productDTO, product);
-            await _productManager.Update(product);
+            await _productManager.Update(product, productDTO);
 
             return NoContent();
         }

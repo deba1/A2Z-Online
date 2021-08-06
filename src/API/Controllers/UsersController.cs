@@ -1,4 +1,4 @@
-﻿using API.Managers;
+﻿using Application.Managers;
 using Application.DTOs;
 using AutoMapper;
 using Domain.Entities;
@@ -11,24 +11,22 @@ namespace API.Controllers
     public class UsersController : BaseController
     {
         private readonly IUserManager _userManager;
-        private readonly IMapper _mapper;
 
-        public UsersController(IUserManager userManager, IMapper mapper)
+        public UsersController(IUserManager userManager)
         {
             _userManager = userManager;
-            _mapper = mapper;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAll()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
         {
             return Ok(await _userManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetById(int id)
+        public async Task<ActionResult<UserDTO>> GetById(int id)
         {
             var user = await _userManager.GetById(id);
 
@@ -43,8 +41,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            user = _mapper.Map(userDTO, user);
-            await _userManager.Update(user);
+            await _userManager.Update(user, userDTO);
 
             return NoContent();
         }

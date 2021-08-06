@@ -1,7 +1,5 @@
-﻿using API.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,24 +9,22 @@ namespace API.Controllers
     public class CategoriesController : BaseController
     {
         private readonly ICategoryManager _categoryManager;
-        private readonly IMapper _mapper;
 
-        public CategoriesController(ICategoryManager categoryManager, IMapper mapper)
+        public CategoriesController(ICategoryManager categoryManager)
         {
             _categoryManager = categoryManager;
-            _mapper = mapper;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
         {
             return Ok(await _categoryManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetById(int id)
+        public async Task<ActionResult<CategoryDTO>> GetById(int id)
         {
             var category = await _categoryManager.GetById(id);
 
@@ -36,15 +32,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Category>> Add([FromBody] CategoryDTO categoryDTO)
+        public async Task<ActionResult<CategoryDTO>> Add([FromBody] CategoryDTO categoryDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var category = _mapper.Map<Category>(categoryDTO);
-            await _categoryManager.Add(category);
+            var category = await _categoryManager.Add(categoryDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
         }
@@ -59,8 +54,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            category = _mapper.Map(categoryDTO, category);
-            await _categoryManager.Update(category);
+            await _categoryManager.Update(category, categoryDTO);
 
             return NoContent();
         }

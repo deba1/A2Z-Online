@@ -1,48 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using API.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
     public class FeedbacksController : BaseController
     {
         private readonly IFeedbackManager _feedbackManager;
-        private readonly IMapper _mapper;
 
-        public FeedbacksController(IFeedbackManager feedbackManager, IMapper mapper)
+        public FeedbacksController(IFeedbackManager feedbackManager)
         {
             _feedbackManager = feedbackManager;
-            _mapper = mapper;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feedback>>> GetAll()
+        public async Task<ActionResult<IEnumerable<FeedbackDTO>>> GetAll()
         {
             return Ok(await _feedbackManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Feedback>> GetById(int id)
+        public async Task<ActionResult<FeedbackDTO>> GetById(int id)
         {
             var feedback = await _feedbackManager.GetById(id);
             return (feedback == null) ? NotFound() : Ok(feedback);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Feedback>> Add([FromBody] FeedbackDTO feedbackDTO)
+        public async Task<ActionResult<FeedbackDTO>> Add([FromBody] FeedbackDTO feedbackDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var feedback = _mapper.Map<Feedback>(feedbackDTO);
-            await _feedbackManager.Add(feedback);
+
+            var feedback = await _feedbackManager.Add(feedbackDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = feedback.Id }, feedback);
         }
@@ -55,8 +51,8 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            feedback = _mapper.Map(feedbackDTO, feedback);
-            await _feedbackManager.Update(feedback);
+
+            await _feedbackManager.Update(feedback, feedbackDTO);
 
             return NoContent();
         }
@@ -65,7 +61,7 @@ namespace API.Controllers
         public async Task<IActionResult> Remove(int id)
         {
             var feedback = await _feedbackManager.GetById(id);
-            if(feedback != null)
+            if (feedback != null)
             {
                 await _feedbackManager.Remove(feedback);
                 return NoContent();

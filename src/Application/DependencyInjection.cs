@@ -1,11 +1,15 @@
 ﻿using Application.Interfaces;
 using Application.Services;
-using Application.Services.EncryptionServices;
+using Application.Services.DbServices;
+using Application.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Application.Managers;
+using Application.DTOs.ResponseDTOs;
+using Application.Services.EncryptionServices;
 
 namespace Application
 {
@@ -36,7 +40,39 @@ namespace Application
 
             // Adding application services.
             services.AddTransient<IAuthenticationService, JwtService>();
+
+            // Adding repository services.
+            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+            services.AddTransient<IInventoryRepository, InventoryRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IUserRepository, UserReposity>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
+            services.AddTransient<IUserCredentialRepository, UserCredentialRepository>();
+            services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IEncryptionService, Sha256EncryptionService>();
+
+            // Adding manager services
+            services.AddTransient(typeof(IBaseManager<>), typeof(BaseManager<>));
+            services.AddTransient<IBrandManager, BrandManager>();
+            services.AddTransient<ICategoryManager, CategoryManager>();
+            services.AddTransient<IFeedbackManager, FeedbackManager>();
+            services.AddTransient<IInventoryManager, InventoryManager>();
+            services.AddTransient<IOrderManager, OrderManager>();
+            services.AddTransient<IProductManager, ProductManager>();
+            services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IPaymentManager, PaymentManager>();
+            services.AddTransient<IGlobalConfigurationManager, GlobalConfigurationManager>();
+            services.AddTransient<IUserCredentialManager, UserCredentialManager>();
+            services.AddTransient<IAuthenticationManager, AuthenticationManager>();
+            services.AddTransient<IApiResponseDTO, ApiResponseDTO>();
+
+
+            services.AddAutoMapper(typeof(DependencyInjection));
 
             return services;
         }

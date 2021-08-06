@@ -1,6 +1,5 @@
-﻿using Infrastructure.Persistence;
-using Infrastructure.Repository;
-using Infrastructure.Transaction;
+﻿using Application.Interfaces;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,19 +16,7 @@ namespace Infrastructure
 
             services.BuildServiceProvider().GetService<AppDbContext>().Database.Migrate(); // Do migration automatically.
 
-            // Adding repository services.
-            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IBrandRepository, BrandRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
-            services.AddTransient<IInventoryRepository, InventoryRepository>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<IUserRepository, UserReposity>();
-            services.AddTransient<IPaymentRepository, PaymentRepository>();
-            services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
-            services.AddTransient<IUserCredentialRepository, UserCredentialRepository>();
-            services.AddTransient<IDatabaseTransaction, DatabaseTransaction>();
+            services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 
             return services;
         }
