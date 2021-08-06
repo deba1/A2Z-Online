@@ -1,12 +1,10 @@
-﻿using Domain.Common;
-using Domain.Enums;
+﻿using Domain.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace Domain.Entities
+namespace Application.DTOs.AuthenticationDTOs
 {
-    public class User : BaseEntity
+    public class RegisterDTO
     {
         [Required]
         public string Name { get; set; }
@@ -16,7 +14,12 @@ namespace Domain.Entities
         public string Email { get; set; }
 
         [Required]
-        public bool EmailVerified { get; set; }
+        [StringLength(50, MinimumLength = 5)]
+        public string Password { get; set; }
+
+        [Required]
+        [Compare("Password", ErrorMessage = "Password and repeat does not match")]
+        public string RepeatPassword { get; set; }
 
         [Required]
         public UserRole Role { get; set; }
@@ -32,8 +35,5 @@ namespace Domain.Entities
 
         [Required]
         public string Address { get; set; }
-
-        [JsonIgnore]
-        public virtual UserCredential UserCredential { get; set;}
     }
 }

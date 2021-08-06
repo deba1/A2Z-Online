@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Persistence;
 using Infrastructure.Repository;
+using Infrastructure.Transaction;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,8 @@ namespace Infrastructure
             services.AddTransient<IUserRepository, UserReposity>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
             services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
+            services.AddTransient<IUserCredentialRepository, UserCredentialRepository>();
+            services.AddTransient<IDatabaseTransaction, DatabaseTransaction>();
 
             return services;
         }

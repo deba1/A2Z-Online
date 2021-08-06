@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.AuthenticationDTOs;
 using AutoMapper;
 using Domain.Entities;
 
@@ -10,6 +11,9 @@ namespace API.MappingConfigurations
         {
             CreateMap<UserDTO, User>();
             CreateMap<User, UserDTO>();
+
+            CreateMap<RegisterDTO, User>();
+            CreateMap<User, RegisterDTO>();
         }
     }
 }
