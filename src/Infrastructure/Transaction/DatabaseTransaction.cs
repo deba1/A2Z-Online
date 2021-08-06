@@ -5,7 +5,7 @@ namespace Infrastructure.Transaction
 {
     public interface IDatabaseTransaction
     {
-        IDbContextTransaction Transaction { get; }
+        IDbContextTransaction GetTransaction();
     }
 
     class DatabaseTransaction : IDatabaseTransaction
@@ -17,9 +17,9 @@ namespace Infrastructure.Transaction
             _context = context;
         }
 
-        public IDbContextTransaction Transaction
+        public IDbContextTransaction GetTransaction()
         {
-            get => _context.Database.BeginTransaction();
+            return _context.Database.BeginTransaction();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace API.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<User>> Register(RegisterDTO registerDTO)
         {
-            var result = await _authenticationManager.ResiterUser(registerDTO);
+            var result = await _authenticationManager.RegisterUser(registerDTO);
             return (result != null) ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Registration failed"));
         }
 
@@ -43,12 +43,13 @@ namespace API.Controllers
             var id = HttpContext.GetUserId();
             if (id == -1)
             {
-                return BadRequest(_apiResponseDTO.SetApiResponse("User is not logged in."));
+                return Unauthorized(_apiResponseDTO.SetApiResponse("User is not logged in."));
             }
 
             if (!await _authenticationManager.CheckOldPassword(id, changePasswordDTO.OldPassword))
             {
-                return BadRequest(_apiResponseDTO.SetApiResponse("Old password does not match."));
+                ModelState.AddModelError("OldPassword", "Old password does not match.");
+                return BadRequest(ModelState);
             }
 
             return await _authenticationManager.ChangePassword(id, changePasswordDTO.RepeatPassword) ? NoContent() : BadRequest(_apiResponseDTO.SetApiResponse("Password change failed."));

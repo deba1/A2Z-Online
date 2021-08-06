@@ -1,5 +1,4 @@
-﻿using Application.DTOs.AuthenticationDTOs;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repository;
 using System.Threading.Tasks;
@@ -11,6 +10,7 @@ namespace API.Managers
         Task<UserCredential> LoginUser(string email);
         Task<bool> CheckOldPassword(int id, string oldPassword);
         Task<bool> ChangePassword(int id, string password);
+        Task<bool> UpdateLastLogin(int id);
     }
 
     public class UserCredentialManager : BaseManager<UserCredential>, IUserCredentialManager
@@ -24,10 +24,19 @@ namespace API.Managers
             _encryptionService = encryptionService;
         }
 
+        #region Login
+
         public Task<UserCredential> LoginUser(string email)
         {
             return _userCredentialRepository.LoginUser(email);
         }
+
+        public async Task<bool> UpdateLastLogin(int id)
+        {
+            return await _userCredentialRepository.UpdateLastLogin(id);
+        }
+
+        #endregion
 
         public async Task<bool> CheckOldPassword(int id, string oldPassword)
         {

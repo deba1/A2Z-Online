@@ -4,18 +4,18 @@ using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Transaction;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
 using System.Threading.Tasks;
 
 namespace API.Managers
 {
     public interface IAuthenticationManager
     {
-        Task<User> ResiterUser(RegisterDTO registerDTO);
+        Task<User> RegisterUser(RegisterDTO registerDTO);
         Task<LoginResponseDTO> LoginUser(LoginRequestDTO loginRequestDTO);
         Task<bool> ChangePassword(int id, string password);
         Task<bool> CheckOldPassword(int id, string oldPassword);
     }
+
     public class AuthenticationManager : IAuthenticationManager
     {
         private readonly IUserCredentialManager _userCredentialManager;
@@ -41,18 +41,24 @@ namespace API.Managers
             _encryptionService = encryptionService;
         }
 
+        #region Login
+
         public async Task<LoginResponseDTO> LoginUser(LoginRequestDTO loginRequestDTO)
         {
             var userCredential = await _userCredentialManager.LoginUser(loginRequestDTO.Email);
 
-            if (userCredential == null)
+            if (userCredential == null || !_encryptionService.VerifyHash(userCredential.Password, loginRequestDTO.Password))
             {
                 return null;
             }
 
-            if (!_encryptionService.VerifyHash(userCredential.Password, loginRequestDTO.Password))
+            try
             {
-                return null;
+                await _userCredentialManager.UpdateLastLogin(userCredential.Id);
+            }
+            catch
+            {
+
             }
 
             LoginResponseDTO loginResponseDTO = new()
@@ -64,12 +70,14 @@ namespace API.Managers
             return loginResponseDTO;
         }
 
-        public async Task<User> ResiterUser(RegisterDTO registerDTO)
+        #endregion
+
+        public async Task<User> RegisterUser(RegisterDTO registerDTO)
         {
             registerDTO.Password = _encryptionService.GenerateHash(registerDTO.Password);
             var user = _mapper.Map<User>(registerDTO);
 
-            using IDbContextTransaction transaction = _databaseTransaction.Transaction;
+            using IDbContextTransaction transaction = _databaseTransaction.GetTransaction();
             try
             {
                 await _userManager.Add(user);
@@ -93,7 +101,7 @@ namespace API.Managers
 
         public async Task<bool> CheckOldPassword(int id, string oldPassword)
         {
-            return (await _userCredentialManager.CheckOldPassword(id, oldPassword));
+            return await _userCredentialManager.CheckOldPassword(id, oldPassword);
         }
 
         public async Task<bool> ChangePassword(int id, string password)
