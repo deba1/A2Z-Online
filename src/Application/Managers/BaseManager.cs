@@ -1,5 +1,5 @@
 ﻿using Domain.Common;
-using Application.Repository;
+using Application.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;

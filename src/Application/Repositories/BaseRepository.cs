@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Application.Repository
+namespace Application.Repositories
 {
     public interface IBaseRepository<T> where T : class
     {

@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Services;
 using Application.Services.DbServices;
-using Application.Repository;
+using Application.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +40,10 @@ namespace Application
 
             // Adding application services.
             services.AddTransient<IAuthenticationService, JwtService>();
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IEncryptionService, Sha256EncryptionService>();
+
+            services.AddAutoMapper(typeof(DependencyInjection));
 
             // Adding repository services.
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
@@ -53,8 +57,6 @@ namespace Application
             services.AddTransient<IPaymentRepository, PaymentRepository>();
             services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
             services.AddTransient<IUserCredentialRepository, UserCredentialRepository>();
-            services.AddTransient<ITransactionService, TransactionService>();
-            services.AddTransient<IEncryptionService, Sha256EncryptionService>();
 
             // Adding manager services
             services.AddTransient(typeof(IBaseManager<>), typeof(BaseManager<>));
@@ -70,9 +72,6 @@ namespace Application
             services.AddTransient<IUserCredentialManager, UserCredentialManager>();
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
             services.AddTransient<IApiResponseDTO, ApiResponseDTO>();
-
-
-            services.AddAutoMapper(typeof(DependencyInjection));
 
             return services;
         }

@@ -1,6 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Application.Repository;
+using Application.Repositories;
 using System.Threading.Tasks;
 using AutoMapper;
 

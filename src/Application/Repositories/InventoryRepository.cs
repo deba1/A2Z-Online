@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 
-namespace Application.Repository
+namespace Application.Repositories
 {
     public interface IInventoryRepository : IBaseRepository<Inventory>
     {

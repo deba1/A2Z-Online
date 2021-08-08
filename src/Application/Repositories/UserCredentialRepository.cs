@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Repository
+namespace Application.Repositories
 {
     public interface IUserCredentialRepository : IBaseRepository<UserCredential>
     {

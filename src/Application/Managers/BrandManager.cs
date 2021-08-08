@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Application.Repository;
+using Application.Repositories;
 using AutoMapper;
 
 namespace Application.Managers

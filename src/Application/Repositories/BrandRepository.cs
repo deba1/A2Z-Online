@@ -2,7 +2,7 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Repository
+namespace Application.Repositories
 {
     public interface IBrandRepository : IBaseRepository<Brand>
     {
