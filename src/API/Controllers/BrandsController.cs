@@ -1,7 +1,5 @@
-﻿using API.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,24 +9,22 @@ namespace API.Controllers
     public class BrandsController : BaseController
     {
         private readonly IBrandManager _brandManager;
-        private readonly IMapper _mapper;
 
-        public BrandsController(IBrandManager brandManager, IMapper mapper)
+        public BrandsController(IBrandManager brandManager)
         {
             _brandManager = brandManager;
-            _mapper = mapper;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Brand>>> GetAll()
+        public async Task<ActionResult<IEnumerable<BrandDTO>>> GetAll()
         {
             return Ok(await _brandManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Brand>> GetById(int id)
+        public async Task<ActionResult<BrandDTO>> GetById(int id)
         {
             var brand = await _brandManager.GetById(id);
 
@@ -36,15 +32,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Brand>> Add([FromBody] BrandDTO brandDTO)
+        public async Task<ActionResult<BrandDTO>> Add([FromBody] BrandDTO brandDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var brand = _mapper.Map<Brand>(brandDTO);
-            await _brandManager.Add(brand);
+            var brand = await _brandManager.Add(brandDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = brand.Id }, brand);
         }
@@ -59,8 +54,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            brand = _mapper.Map(brandDTO, brand);
-            await _brandManager.Update(brand);
+            await _brandManager.Update(brand, brandDTO);
 
             return NoContent();
         }

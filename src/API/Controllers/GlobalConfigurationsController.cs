@@ -1,7 +1,5 @@
-﻿using API.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,24 +9,22 @@ namespace API.Controllers
     public class GlobalConfigurationsController : BaseController
     {
         private readonly IGlobalConfigurationManager _globalConfigurationManager;
-        private readonly IMapper _mapper;
 
-        public GlobalConfigurationsController(IGlobalConfigurationManager globalConfigurationManager, IMapper mapper)
+        public GlobalConfigurationsController(IGlobalConfigurationManager globalConfigurationManager)
         {
             _globalConfigurationManager = globalConfigurationManager;
-            _mapper = mapper;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GlobalConfiguration>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GlobalConfigurationDTO>>> GetAll()
         {
             return Ok(await _globalConfigurationManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GlobalConfiguration>> GetById(int id)
+        public async Task<ActionResult<GlobalConfigurationDTO>> GetById(int id)
         {
             var globalConfiguration = await _globalConfigurationManager.GetById(id);
 
@@ -36,14 +32,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GlobalConfiguration>> Add([FromBody] GlobalConfigurationDTO globalConfigurationDTO)
+        public async Task<ActionResult<GlobalConfigurationDTO>> Add([FromBody] GlobalConfigurationDTO globalConfigurationDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var globalConfiguration = _mapper.Map<GlobalConfiguration>(globalConfigurationDTO);
-            await _globalConfigurationManager.Add(globalConfiguration);
+            var globalConfiguration = await _globalConfigurationManager.Add(globalConfigurationDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = globalConfiguration.Id }, globalConfiguration);
         }
@@ -56,8 +51,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            globalConfiguration = _mapper.Map(globalConfigurationDTO, globalConfiguration);
-            await _globalConfigurationManager.Update(globalConfiguration);
+            await _globalConfigurationManager.Update(globalConfiguration, globalConfigurationDTO);
 
             return NoContent();
         }

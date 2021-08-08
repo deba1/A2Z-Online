@@ -1,11 +1,7 @@
-﻿using API.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -13,38 +9,35 @@ namespace API.Controllers
     public class InventoriesController : BaseController
     {
         private readonly IInventoryManager _inventoryManager;
-        private readonly IMapper _mapper;
 
-        public InventoriesController(IInventoryManager inventoryManager, IMapper mapper)
+        public InventoriesController(IInventoryManager inventoryManager)
         {
             _inventoryManager = inventoryManager;
-            _mapper = mapper;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetAll()
+        public async Task<ActionResult<IEnumerable<InventoryDTO>>> GetAll()
         {
             return Ok(await _inventoryManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Inventory>> GetById(int id)
+        public async Task<ActionResult<InventoryDTO>> GetById(int id)
         {
             var inventory = await _inventoryManager.GetById(id);
             return (inventory == null) ? NotFound() : Ok(inventory);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Inventory>> Add([FromBody] InventoryDTO inventoryDTO)
+        public async Task<ActionResult<InventoryDTO>> Add([FromBody] InventoryDTO inventoryDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var inventory = _mapper.Map<Inventory>(inventoryDTO);
-            await _inventoryManager.Add(inventory);
+            var inventory = await _inventoryManager.Add(inventoryDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = inventory.Id }, inventory);
         }
@@ -57,8 +50,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            inventory = _mapper.Map(inventoryDTO, inventory);
-            await _inventoryManager.Update(inventory);
+            await _inventoryManager.Update(inventory, inventoryDTO);
 
             return NoContent();
         }

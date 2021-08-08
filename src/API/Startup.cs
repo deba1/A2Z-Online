@@ -27,7 +27,6 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration); // Adding Infrastructure services.
-            services.AddAPI();
             services.AddApplicationServices(Configuration);
 
             services.AddControllers();

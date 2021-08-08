@@ -1,7 +1,5 @@
-﻿using API.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,24 +9,22 @@ namespace API.Controllers
     public class PaymentsController : BaseController
     {
         private readonly IPaymentManager _paymentManager;
-        private readonly IMapper _mapper;
 
-        public PaymentsController(IPaymentManager paymentManager, IMapper mapper)
+        public PaymentsController(IPaymentManager paymentManager)
         {
-            _mapper = mapper;
             _paymentManager = paymentManager;
         }
 
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Payment>>> GetAll()
+        public async Task<ActionResult<IEnumerable<PaymentDTO>>> GetAll()
         {
             return Ok(await _paymentManager.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Payment>> GetById(int id)
+        public async Task<ActionResult<PaymentDTO>> GetById(int id)
         {
             var payment = await _paymentManager.GetById(id);
 
@@ -36,14 +32,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Payment>> Add([FromBody] PaymentDTO paymentDTO)
+        public async Task<ActionResult<PaymentDTO>> Add([FromBody] PaymentDTO paymentDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var payment = _mapper.Map<Payment>(paymentDTO);
-            await _paymentManager.Add(payment);
+            var payment = await _paymentManager.Add(paymentDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = payment.Id }, payment);
         }
@@ -56,8 +51,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            payment = _mapper.Map(paymentDTO, payment);
-            await _paymentManager.Update(payment);
+            await _paymentManager.Update(payment, paymentDTO);
 
             return NoContent();
         }
