@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.DBContextInterfaces;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

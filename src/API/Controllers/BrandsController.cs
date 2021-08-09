@@ -73,6 +73,21 @@ namespace API.Controllers
             return NotFound();
         }
 
-        #endregion 
+        #endregion
+
+        #region product
+        [HttpGet("{brandId}/products")]
+        public async Task<ActionResult<List<ProductDTO>>> GetAllBrandProduct(int brandId)
+        {
+            return Ok(await _brandManager.GetAllBrandProduct(brandId));
+        }
+
+        [HttpGet("{brandId}/product/{productId}")]
+        public async Task<ActionResult<List<ProductDTO>>> GetBrandProducttById(int brandId, int productId)
+        {
+            var result = await _brandManager.GetBrandProductById(brandId, productId);
+            return (result != null) ? Ok(result) : NotFound();
+        }
+        #endregion
     }
 }

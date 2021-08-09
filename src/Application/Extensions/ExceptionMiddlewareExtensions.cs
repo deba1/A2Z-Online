@@ -1,15 +1,10 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.ResponseDTOs;
 using Application.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Extensions
 {
@@ -19,7 +14,8 @@ namespace Application.Extensions
         {
             app.UseExceptionHandler(appError =>
             {
-                appError.Run(async context => {
+                appError.Run(async context =>
+                {
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (context != null)
                     {

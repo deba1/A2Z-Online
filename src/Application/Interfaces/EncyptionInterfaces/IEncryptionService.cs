@@ -1,4 +1,4 @@
-﻿namespace Application.Interfaces
+﻿namespace Application.Interfaces.EncyptionInterfaces
 {
     public interface IEncryptionService
     {

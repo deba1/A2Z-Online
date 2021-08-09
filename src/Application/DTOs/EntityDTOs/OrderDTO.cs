@@ -6,7 +6,6 @@ namespace Application.DTOs
 {
     public class OrderDTO
     {
-        [Required]
         public int UserId { get; set; }
 
         [Required]

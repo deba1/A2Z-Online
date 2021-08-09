@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Application.DTOs
+namespace Application.DTOs.ResponseDTOs
 {
     class ErrorDetailsDTO
     {
