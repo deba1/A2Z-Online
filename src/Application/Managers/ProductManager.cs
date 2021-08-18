@@ -8,9 +8,9 @@ namespace Application.Managers
 {
     public interface IProductManager : IBaseManager<Product>
     {
-        Task<ICollection<Feedback>> GetAllFeedbacksProduct(int productId);
+        Task<ICollection<Feedback>> GetAllFeedbacksProducts(int productId);
         Task<Feedback> GetFeedbacksByProductId(int productId, int feedbackId);
-        Task<ICollection<Inventory>> GetAllInventory(int productId);
+        Task<ICollection<Inventory>> GetAllInventorys(int productId);
         Task<Inventory> GetProductInventoryById(int productId, int inventoryId);
     }
 
@@ -27,19 +27,22 @@ namespace Application.Managers
         }
 
         #region Feedback
-        public async Task<ICollection<Feedback>> GetAllFeedbacksProduct(int productId)
+
+        public async Task<ICollection<Feedback>> GetAllFeedbacksProducts(int productId)
         {
-            return await _productRepository.GetAllFeedbacksProduct(productId);
+            return await _productRepository.GetAllFeedbacksProducts(productId);
         }
 
         public async Task<Feedback> GetFeedbacksByProductId(int productId, int feedbackId)
         {
             return await _productRepository.GetFeedbacksByProductId(productId, feedbackId);
         }
+
         #endregion
 
         #region Inventory
-        public async Task<ICollection<Inventory>> GetAllInventory(int productId)
+
+        public async Task<ICollection<Inventory>> GetAllInventorys(int productId)
         {
             return await _productInventoryRepository.GetAllSecondLevel(productId, "ProductId");
         }
@@ -48,7 +51,7 @@ namespace Application.Managers
         {
             return await _productInventoryRepository.GetSecondLevelById(productId, inventoryId, "ProductId");
         }
-        #endregion
 
+        #endregion
     }
 }

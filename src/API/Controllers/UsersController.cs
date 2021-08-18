@@ -66,13 +66,13 @@ namespace API.Controllers
         #region Feedback
      
         [HttpGet("{userId}/feedbacks")]
-        public async Task<ActionResult<List<FeedbackDTO>>> Getfeedbacks(int userId)
+        public async Task<ActionResult<IEnumerable<FeedbackDTO>>> Getfeedbacks(int userId)
         {
              return Ok(await _userManager.GetAllFeedbacks(userId));
         }
 
         [HttpGet("{userId}/feedbacks/{feedbackId}")]
-        public async Task<ActionResult<List<FeedbackDTO>>> GetFeedbackById(int userId, int feedbackId)
+        public async Task<ActionResult<FeedbackDTO>> GetFeedbackById(int userId, int feedbackId)
         {
             var result = await _userManager.GetFeedbackByUserId(userId, feedbackId);
             return (result != null) ? Ok(result) : NotFound();
@@ -80,6 +80,7 @@ namespace API.Controllers
         #endregion
 
         #region User Credentials
+
         [HttpGet("{id}/UserCredential")]
         public async Task<ActionResult<UserCredentialDTO>> GetUserCredentialById(int id)
         {
@@ -87,21 +88,24 @@ namespace API.Controllers
 
             return (userCredential == null) ? NotFound() : Ok(userCredential);
         }
+
         #endregion
 
         #region Order
+
         [HttpGet("{userId}/orders")]
-        public async Task<ActionResult<List<OrderDTO>>> GetOrders(int userId)
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrders(int userId)
         {
             return Ok(await _userManager.GetAllOrders(userId));
         }
 
         [HttpGet("{userId}/orders/{orderId}")]
-        public async Task<ActionResult<List<OrderDTO>>> GetOrdersById(int userId, int orderId)
+        public async Task<ActionResult<OrderDTO>> GetOrdersById(int userId, int orderId)
         {
             var result = await _userManager.GetOrderById(userId, orderId);
             return (result != null) ? Ok(result) : NotFound();
         }
+
         #endregion
     }
 }

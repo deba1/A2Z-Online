@@ -78,18 +78,18 @@ namespace API.Controllers
         #region product
 
         [HttpGet("{categoryId}/products")]
-        public async Task<ActionResult<List<ProductDTO>>> GetAllCategoryProduct(int categoryId)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllCategoryProducts(int categoryId)
         {
-            return Ok(await _categoryManager.GetAllCategoryProduct(categoryId));
+            return Ok(await _categoryManager.GetAllCategoryProducts(categoryId));
         }
 
         [HttpGet("{categoryId}/product/{productId}")]
-        public async Task<ActionResult<List<ProductDTO>>> GetCategoryProducttById(int categoryId, int productId)
+        public async Task<ActionResult<ProductDTO>> GetCategoryProducttById(int categoryId, int productId)
         {
             var result = await _categoryManager.GetCategoryProductById(categoryId, productId);
             return (result != null) ? Ok(result) : NotFound();
         }
-        #endregion
 
+        #endregion
     }
 }

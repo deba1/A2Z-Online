@@ -76,18 +76,20 @@ namespace API.Controllers
         #endregion
 
         #region product
+
         [HttpGet("{brandId}/products")]
-        public async Task<ActionResult<List<ProductDTO>>> GetAllBrandProduct(int brandId)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllBrandProducts(int brandId)
         {
-            return Ok(await _brandManager.GetAllBrandProduct(brandId));
+            return Ok(await _brandManager.GetAllBrandProducts(brandId));
         }
 
         [HttpGet("{brandId}/product/{productId}")]
-        public async Task<ActionResult<List<ProductDTO>>> GetBrandProducttById(int brandId, int productId)
+        public async Task<ActionResult<ProductDTO>> GetBrandProducttById(int brandId, int productId)
         {
             var result = await _brandManager.GetBrandProductById(brandId, productId);
             return (result != null) ? Ok(result) : NotFound();
         }
+
         #endregion
     }
 }

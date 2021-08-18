@@ -22,6 +22,8 @@ namespace Application.Repositories
             _context = context;
         }
 
+        #region Order-item
+
         public async Task<ICollection<OrderItem>> GetAllOrderItems(int tOneId)
         {
             return await _context.OrderItems.Where(x => x.OrderId.Equals(tOneId))
@@ -33,5 +35,7 @@ namespace Application.Repositories
             return await _context.OrderItems.Where(x => x.OrderId.Equals(tOneId) && x.Id.Equals(tTwoId))
                 .Include(p => p.Product).FirstOrDefaultAsync();
         }
+
+        #endregion
     }
 }

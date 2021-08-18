@@ -22,6 +22,7 @@ namespace Application.Repositories
         }
 
         #region Feedback
+
         public async Task<ICollection<Feedback>> GetAllFeedbacks(int tOneId)
         {
             return await _context.Feedbacks.Where(x => x.UserId.Equals(tOneId))

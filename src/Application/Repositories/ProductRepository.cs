@@ -10,7 +10,7 @@ namespace Application.Repositories
 {
     public interface IProductRepository : IBaseRepository<Product>
     {
-        Task<ICollection<Feedback>> GetAllFeedbacksProduct(int productId);
+        Task<ICollection<Feedback>> GetAllFeedbacksProducts(int productId);
         Task<Feedback> GetFeedbacksByProductId(int productId, int feedbackId);
 
     }
@@ -25,7 +25,8 @@ namespace Application.Repositories
         }
 
         #region Feedback
-        public async Task<ICollection<Feedback>> GetAllFeedbacksProduct(int tOneId)
+
+        public async Task<ICollection<Feedback>> GetAllFeedbacksProducts(int tOneId)
         {
             return await _context.Feedbacks.Where(x => x.ProductId.Equals(tOneId))
                 .Include(p => p.User).ToListAsync();
@@ -36,7 +37,7 @@ namespace Application.Repositories
             return await _context.Feedbacks.Where(x => x.ProductId.Equals(tOneId) && x.Id.Equals(tTwoId))
                 .Include(p => p.User).FirstOrDefaultAsync();
         }
-        #endregion
 
+        #endregion
     }
 }

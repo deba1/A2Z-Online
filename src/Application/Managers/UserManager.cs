@@ -40,6 +40,7 @@ namespace Application.Managers
         #endregion
 
         #region Orders
+
         public async Task<ICollection<Order>> GetAllOrders(int userId)
         {
             return await _userOrderRepository.GetAllSecondLevel(userId, "UserId");
@@ -49,7 +50,7 @@ namespace Application.Managers
         {
             return await _userOrderRepository.GetSecondLevelById(userId, orderId, "UserId");
         }
-        #endregion
 
+        #endregion
     }
 }

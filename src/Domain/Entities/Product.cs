@@ -28,6 +28,7 @@ namespace Domain.Entities
         public int BrandId { get; set; }
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
+       
         [JsonIgnore]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }   
