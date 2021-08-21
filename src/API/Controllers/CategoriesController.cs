@@ -75,7 +75,7 @@ namespace API.Controllers
 
         #endregion
 
-        #region product
+        #region Product
 
         [HttpGet("{categoryId}/products")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllCategoryProducts(int categoryId)
@@ -83,7 +83,7 @@ namespace API.Controllers
             return Ok(await _categoryManager.GetAllCategoryProducts(categoryId));
         }
 
-        [HttpGet("{categoryId}/product/{productId}")]
+        [HttpGet("{categoryId}/products/{productId}")]
         public async Task<ActionResult<ProductDTO>> GetCategoryProducttById(int categoryId, int productId)
         {
             var result = await _categoryManager.GetCategoryProductById(categoryId, productId);

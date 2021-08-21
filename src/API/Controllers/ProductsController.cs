@@ -87,7 +87,7 @@ namespace API.Controllers
 
         #endregion
 
-        #region Inventory
+        #region Inventories
 
         [HttpGet("{productId}/inventory")]
         public async Task<ActionResult<IEnumerable<InventoryDTO>>> GetAllInventory(int productId)
@@ -95,7 +95,7 @@ namespace API.Controllers
             return Ok(await _productManager.GetAllInventorys(productId));
         }
 
-        [HttpGet("{productId}/inventory/{inventoryId}")]
+        [HttpGet("{productId}/inventories/{inventoryId}")]
         public async Task<ActionResult<InventoryDTO>> GetProductInventorytById(int productId, int inventoryId)
         {
             var result = await _productManager.GetProductInventoryById(productId, inventoryId);

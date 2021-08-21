@@ -24,6 +24,7 @@ namespace Application.Managers
         }
 
         #region Product
+
         public async Task<ICollection<Product>> GetAllBrandProducts(int brandId)
         {
             return await _brandProductRepository.GetAllSecondLevel(brandId, "BrandId");
