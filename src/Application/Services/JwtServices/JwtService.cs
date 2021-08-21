@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.EncyptionInterfaces;
 using Application.Services.JwtServices;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;

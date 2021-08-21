@@ -1,8 +1,8 @@
-﻿using Application.Managers;
+﻿using Application.DTOs;
 using Application.DTOs.AuthenticationDTOs;
 using Application.DTOs.ResponseDTOs;
 using Application.Extensions;
-using Domain.Entities;
+using Application.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,6 @@ namespace API.Controllers
     public class AuthenticationsController : BaseController
     {
         private readonly IAuthenticationManager _authenticationManager;
-        private readonly IApiResponseDTO _apiResponseDTO;
 
         public AuthenticationsController(IAuthenticationManager authenticationManager, IApiResponseDTO apiResponseDTO)
         {
@@ -23,7 +22,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> Register(RegisterDTO registerDTO)
+        public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
         {
             var result = await _authenticationManager.RegisterUser(registerDTO);
             return (result != null) ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Registration failed"));
@@ -41,10 +40,6 @@ namespace API.Controllers
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
             var id = HttpContext.GetUserId();
-            if (id == -1)
-            {
-                return Unauthorized(_apiResponseDTO.SetApiResponse("User is not logged in."));
-            }
 
             if (!await _authenticationManager.CheckOldPassword(id, changePasswordDTO.OldPassword))
             {

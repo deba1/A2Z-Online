@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.EncyptionInterfaces;
 using System;
 using System.Security.Cryptography;
 using System.Text;

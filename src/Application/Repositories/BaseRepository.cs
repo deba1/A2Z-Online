@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.DBContextInterfaces;
 using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,7 +27,7 @@ namespace Application.Repositories
         /// <summary>
         /// Gets the DbSet of entity by setting it to context.
         /// </summary>
-        protected DbSet<T> DbTable
+        protected virtual DbSet<T> DbTable
         {
             get
             {

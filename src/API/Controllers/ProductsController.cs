@@ -69,5 +69,39 @@ namespace API.Controllers
         }
 
         #endregion
+
+        #region Feedback
+   
+        [HttpGet("{productId}/feedbacks")]
+        public async Task<ActionResult<IEnumerable<FeedbackDTO>>> Getfeedbacks(int productId)
+        {
+            return Ok(await _productManager.GetAllFeedbacksProducts(productId));
+        }
+
+        [HttpGet("{productId}/feedbacks/{feedbackId}")]
+        public async Task<ActionResult<FeedbackDTO>> GetFeedbacksByProductId(int productId, int feedbackId)
+        {
+            var result = await _productManager.GetFeedbacksByProductId(productId, feedbackId);
+            return (result != null) ? Ok(result) : NotFound();
+        }
+
+        #endregion
+
+        #region Inventories
+
+        [HttpGet("{productId}/inventory")]
+        public async Task<ActionResult<IEnumerable<InventoryDTO>>> GetAllInventory(int productId)
+        {
+            return Ok(await _productManager.GetAllInventorys(productId));
+        }
+
+        [HttpGet("{productId}/inventories/{inventoryId}")]
+        public async Task<ActionResult<InventoryDTO>> GetProductInventorytById(int productId, int inventoryId)
+        {
+            var result = await _productManager.GetProductInventoryById(productId, inventoryId);
+            return (result != null) ? Ok(result) : NotFound();
+        }
+
+        #endregion
     }
 }

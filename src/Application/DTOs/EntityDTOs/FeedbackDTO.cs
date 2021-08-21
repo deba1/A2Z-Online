@@ -5,7 +5,6 @@ namespace Application.DTOs
 {
     public class FeedbackDTO
     {
-        [Required]
         public int UserId { get; set; }
 
         [Required]

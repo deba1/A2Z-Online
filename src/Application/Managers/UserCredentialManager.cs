@@ -1,8 +1,8 @@
-﻿using Application.Interfaces;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Application.Repositories;
 using System.Threading.Tasks;
 using AutoMapper;
+using Application.Interfaces.EncyptionInterfaces;
 
 namespace Application.Managers
 {
