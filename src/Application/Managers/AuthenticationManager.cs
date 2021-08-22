@@ -16,8 +16,8 @@ namespace Application.Managers
         Task<LoginResponseDTO> LoginUser(LoginRequestDTO loginRequestDTO);
         Task<bool> ChangePassword(int id, string password);
         Task<bool> CheckOldPassword(int id, string oldPassword);
-        Task<RefreshTokenResponseDTO> RefreshToken(RefreshTokenRequestDTO tokenRequestDTO);
-        Task<int> Logout(RefreshTokenRequestDTO tokenRequestDTO);
+        Task<RefreshTokenResponseDTO> RefreshToken(string refreshToken);
+        Task<int?> Logout(string refreshToken);
     }
 
     public class AuthenticationManager : IAuthenticationManager
@@ -71,7 +71,8 @@ namespace Application.Managers
             string refreshToken = _authenticationService.CreateRefreshToken(userCredential);
             var existingToken = await _refreshTokenRepository.GetByToken(refreshToken);
 
-            if (existingToken == null) {
+            if (existingToken == null)
+            {
                 await _refreshTokenRepository.Add(refreshToken, userCredential.Id);
             }
 
@@ -128,18 +129,24 @@ namespace Application.Managers
 
         #region Refresh Token
 
-        public async Task<RefreshTokenResponseDTO> RefreshToken(RefreshTokenRequestDTO refreshTokenRequest)
+        public async Task<RefreshTokenResponseDTO> RefreshToken(string refreshToken)
         {
             try
             {
-                var foundRefreshToken = await _refreshTokenRepository.GetByToken(refreshTokenRequest.RefreshToken);
+                var foundRefreshToken = await _refreshTokenRepository.GetByToken(refreshToken);
 
-                if (foundRefreshToken == null || foundRefreshToken.Invalidated || foundRefreshToken.Used)
+                if (
+                    foundRefreshToken == null ||
+                    foundRefreshToken.Invalidated ||
+                    foundRefreshToken.Used ||
+                    foundRefreshToken.ExpiryDate < DateTime.UtcNow
+                    )
                 {
                     return null;
                 }
 
-                string newRefreshToken = _authenticationService.CreateRefreshToken(foundRefreshToken.User);
+                UserCredential userCredential = await _userCredentialManager.GetById(foundRefreshToken.UserId);
+                string newRefreshToken = _authenticationService.CreateRefreshToken(userCredential);
 
                 var response = new RefreshTokenResponseDTO
                 {
@@ -158,11 +165,11 @@ namespace Application.Managers
             }
         }
 
-        public async Task<int> Logout(RefreshTokenRequestDTO tokenRequestDTO)
+        public async Task<int?> Logout(string refreshToken)
         {
             try
             {
-                var foundToken = await _refreshTokenRepository.GetByToken(tokenRequestDTO.RefreshToken);
+                var foundToken = await _refreshTokenRepository.GetByToken(refreshToken);
                 if (foundToken != null)
                 {
                     return await _refreshTokenRepository.Remove(foundToken);
@@ -170,13 +177,12 @@ namespace Application.Managers
             }
             catch
             {
-                return -1;
+                return null;
             }
 
-            return -1;
+            return null;
         }
 
         #endregion
-
     }
 }

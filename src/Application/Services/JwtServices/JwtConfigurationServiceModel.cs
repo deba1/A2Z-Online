@@ -41,5 +41,7 @@ namespace Application.Services.JwtServices
         {
             get => Convert.ToInt32(JwtSection.GetSection("ValidationTime").Value);
         }
+
+        protected TimeSpan RefreshTokenLifetime => TimeSpan.Parse(JwtSection.GetSection("RefreshTokenLifetime").Value);
     }
 }

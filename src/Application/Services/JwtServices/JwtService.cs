@@ -23,16 +23,12 @@ namespace Application.Services
 
         private Claim[] GenerateClaims(UserCredential user, bool refreshToken = false)
         {
-            Claims = new[] {
+            return Claims = new[] {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.AuthenticationMethod, refreshToken ? "RefreshToken" : "AccessToken")
             };
-
-            if (refreshToken) {
-                Claims = Claims.Append(new Claim(ClaimTypes.AuthenticationMethod, "RefreshToken")).ToArray();
-            }
-            return Claims;
         }
 
         private JwtSecurityToken GetSecurityToken(Claim[] claims, bool refreshToken = false)
@@ -40,10 +36,10 @@ namespace Application.Services
             return new JwtSecurityToken(
                 issuer: Issuer,
                 audience: Audience,
-                expires: refreshToken ? DateTime.MaxValue : DateTime.UtcNow.AddMinutes(ValidationTime), // Token validation time.
+                expires: refreshToken ? DateTime.UtcNow.Add(RefreshTokenLifetime) : DateTime.UtcNow.AddMinutes(ValidationTime), // Token validation time.
                 claims: claims,
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshToken ? RefreshKey : Key)), SecurityAlgorithms.HmacSha256)
-                );
+            );
         }
 
         public string CreateToken(UserCredential user)
@@ -76,7 +72,7 @@ namespace Application.Services
             }
         }
 
-        public List<Claim> GetClaimsFromToken(string token)
+        public List<Claim> GetClaimsFromToken(string token, bool refreshToken = false)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -85,7 +81,7 @@ namespace Application.Services
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshToken ? RefreshKey : Key)),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidIssuer = Issuer,

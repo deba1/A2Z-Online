@@ -15,7 +15,7 @@ namespace Domain.Entities
 
         [Required]
         public int UserId { get; set; }
-        public DateTime ExpiryDate { get; set; } = DateTime.Now.AddMinutes(30);
+        public DateTime ExpiryDate { get; set; }
         public bool Used { get; set; }
         public bool Invalidated { get; set; }
 

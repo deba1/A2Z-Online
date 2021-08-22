@@ -2,9 +2,6 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Repositories
@@ -13,7 +10,7 @@ namespace Application.Repositories
     {
         Task<RefreshToken> GetByToken(string token);
         Task<int> Add(RefreshToken refreshToken);
-        Task<int> Add(string refreshToken, int userId);
+        Task<int> Add(string refreshToken, int userId, DateTime? expiredAt = null);
         Task<int> Update(RefreshToken refreshToken);
         Task<int> Remove(RefreshToken refreshToken);
     }
@@ -21,38 +18,41 @@ namespace Application.Repositories
     {
         private readonly DbContext _context;
 
-        public RefreshTokenRepository(IAppDbContext dbContext) {
+        public RefreshTokenRepository(IAppDbContext dbContext)
+        {
             _context = dbContext.Instance;
         }
+
+        private DbSet<RefreshToken> DbTable => _context.Set<RefreshToken>();
 
         public async Task<int> Add(RefreshToken refreshToken)
         {
             refreshToken.CreatedAt = DateTime.UtcNow;
-            _context.Set<RefreshToken>().Add(refreshToken);
+            DbTable.Add(refreshToken);
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> Add(string refreshToken, int userId)
+        public async Task<int> Add(string refreshToken, int userId, DateTime? expiredAt = null)
         {
             return await Add(new RefreshToken
             {
                 Token = refreshToken,
                 Invalidated = false,
                 Used = false,
-                JwtId = "",
-                ExpiryDate = DateTime.MaxValue,
+                JwtId = Guid.NewGuid().ToString(),
+                ExpiryDate = expiredAt ?? DateTime.UtcNow.AddDays(30),
                 UserId = userId
             });
         }
 
         public async Task<RefreshToken> GetByToken(string token)
         {
-            return await _context.Set<RefreshToken>().Include(t => t.User).FirstOrDefaultAsync(t => t.Token.Equals(token));
+            return await DbTable.FirstOrDefaultAsync(t => t.Token.Equals(token));
         }
 
         public async Task<int> Remove(RefreshToken refreshToken)
         {
-            _context.Set<RefreshToken>().Remove(refreshToken);
+            DbTable.Remove(refreshToken);
             return await _context.SaveChangesAsync();
         }
 

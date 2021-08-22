@@ -1,7 +1,7 @@
-﻿using Application.Managers;
-using Application.DTOs.AuthenticationDTOs;
+﻿using Application.DTOs.AuthenticationDTOs;
 using Application.DTOs.ResponseDTOs;
 using Application.Extensions;
+using Application.Managers;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -41,15 +41,15 @@ namespace API.Controllers
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<RefreshTokenResponseDTO>> RefreshToken(RefreshTokenRequestDTO tokenRequestDTO)
         {
-            var result = await _authenticationManager.RefreshToken(tokenRequestDTO);
+            var result = await _authenticationManager.RefreshToken(tokenRequestDTO.RefreshToken);
             return result != null ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Invalid Token"));
         }
 
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout(RefreshTokenRequestDTO tokenRequestDTO)
         {
-            var result = await _authenticationManager.Logout(tokenRequestDTO);
-            return result > 0 ? NoContent() : BadRequest(_apiResponseDTO.SetApiResponse("Logout failed"));
+            var result = await _authenticationManager.Logout(tokenRequestDTO.RefreshToken);
+            return result != null ? NoContent() : BadRequest(_apiResponseDTO.SetApiResponse("Logout failed"));
         }
 
         [HttpPost("ChangePassword")]
