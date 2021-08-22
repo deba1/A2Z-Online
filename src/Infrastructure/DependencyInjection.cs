@@ -14,7 +14,7 @@ namespace Infrastructure
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
-            services.BuildServiceProvider().GetService<AppDbContext>().Database.Migrate(); // Do migration automatically.
+            services.BuildServiceProvider().GetService<AppDbContext>().Database.Migrate();
 
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 

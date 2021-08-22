@@ -1,9 +1,11 @@
 ﻿using Application.DTOs.AuthenticationDTOs;
 using Application.Interfaces;
+using Application.Repositories;
 using Application.Services.DbServices;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Threading.Tasks;
 
 namespace Application.Managers
@@ -14,6 +16,8 @@ namespace Application.Managers
         Task<LoginResponseDTO> LoginUser(LoginRequestDTO loginRequestDTO);
         Task<bool> ChangePassword(int id, string password);
         Task<bool> CheckOldPassword(int id, string oldPassword);
+        Task<RefreshTokenResponseDTO> RefreshToken(RefreshTokenRequestDTO tokenRequestDTO);
+        Task<int> Logout(RefreshTokenRequestDTO tokenRequestDTO);
     }
 
     public class AuthenticationManager : IAuthenticationManager
@@ -24,13 +28,15 @@ namespace Application.Managers
         private readonly ITransactionService _transactionService;
         private readonly IAuthenticationService _authenticationService;
         private readonly IEncryptionService _encryptionService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public AuthenticationManager(
             IUserCredentialManager userCredentialManager,
             IUserManager userManager, IMapper mapper,
             ITransactionService transactionService,
             IAuthenticationService authenticationService,
-            IEncryptionService encryptionService
+            IEncryptionService encryptionService,
+            IRefreshTokenRepository refreshTokenRepository
             )
         {
             _userCredentialManager = userCredentialManager;
@@ -39,6 +45,7 @@ namespace Application.Managers
             _transactionService = transactionService;
             _authenticationService = authenticationService;
             _encryptionService = encryptionService;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         #region Login
@@ -61,10 +68,18 @@ namespace Application.Managers
 
             }
 
+            string refreshToken = _authenticationService.CreateRefreshToken(userCredential);
+            var existingToken = await _refreshTokenRepository.GetByToken(refreshToken);
+
+            if (existingToken == null) {
+                await _refreshTokenRepository.Add(refreshToken, userCredential.Id);
+            }
+
             LoginResponseDTO loginResponseDTO = new()
             {
                 User = userCredential.User,
-                AccessToken = _authenticationService.CreateToken(userCredential.User)
+                AccessToken = _authenticationService.CreateToken(userCredential),
+                RefreshToken = refreshToken
             };
 
             return loginResponseDTO;
@@ -110,5 +125,58 @@ namespace Application.Managers
         }
 
         #endregion
+
+        #region Refresh Token
+
+        public async Task<RefreshTokenResponseDTO> RefreshToken(RefreshTokenRequestDTO refreshTokenRequest)
+        {
+            try
+            {
+                var foundRefreshToken = await _refreshTokenRepository.GetByToken(refreshTokenRequest.RefreshToken);
+
+                if (foundRefreshToken == null || foundRefreshToken.Invalidated || foundRefreshToken.Used)
+                {
+                    return null;
+                }
+
+                string newRefreshToken = _authenticationService.CreateRefreshToken(foundRefreshToken.User);
+
+                var response = new RefreshTokenResponseDTO
+                {
+                    AccessToken = _authenticationService.CreateToken(foundRefreshToken.User),
+                    RefreshToken = newRefreshToken
+                };
+
+                await _refreshTokenRepository.Add(newRefreshToken, foundRefreshToken.UserId);
+                await _refreshTokenRepository.Remove(foundRefreshToken);
+
+                return response;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<int> Logout(RefreshTokenRequestDTO tokenRequestDTO)
+        {
+            try
+            {
+                var foundToken = await _refreshTokenRepository.GetByToken(tokenRequestDTO.RefreshToken);
+                if (foundToken != null)
+                {
+                    return await _refreshTokenRepository.Remove(foundToken);
+                }
+            }
+            catch
+            {
+                return -1;
+            }
+
+            return -1;
+        }
+
+        #endregion
+
     }
 }

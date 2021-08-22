@@ -9,16 +9,6 @@ namespace Application.DTOs
         public string Name { get; set; }
 
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        public bool EmailVerified { get; set; }
-
-        [Required]
-        public string Role { get; set; }
-
-        [Required]
         public string Gender { get; set; }
 
         [Required]

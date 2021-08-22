@@ -32,6 +32,11 @@ namespace Application.Services.JwtServices
             get => JwtSection.GetSection("Key").Value;
         }
 
+        protected string RefreshKey
+        {
+            get => JwtSection.GetSection("RefreshKey").Value;
+        }
+
         protected int ValidationTime
         {
             get => Convert.ToInt32(JwtSection.GetSection("ValidationTime").Value);

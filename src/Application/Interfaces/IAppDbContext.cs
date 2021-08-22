@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Application.Interfaces
 {
@@ -17,5 +16,6 @@ namespace Application.Interfaces
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserCredential> UserCredentials { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

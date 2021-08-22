@@ -5,10 +5,10 @@ namespace Domain.Entities
 {
     public class GlobalConfiguration : BaseEntity
     {
-        [Required]
+        [Required, MaxLength(25)]
         public string KeyId { get; set; }
 
-        [Required]
+        [Required, MaxLength(255)]
         public string Value { get; set; }
     }
 }

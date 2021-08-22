@@ -6,10 +6,10 @@ namespace Domain.Entities
 {
     public class Category : CommonEntity
     {
-        [Required]
+        [Required, MaxLength(25)]
         public string Title { get; set; }
 
-        [Required]
+        [Required, MaxLength(255)]
         public string Thumbnail { get; set; }
         public int? ParentId { get; set; }
         public virtual ICollection<Category> CategoryChildren { get; set; }

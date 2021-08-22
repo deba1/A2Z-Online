@@ -14,6 +14,8 @@ namespace Domain.Entities
         [Required]
         [Range(1, 5, ErrorMessage = "Score Must be between 1 to 5")]
         public int Score { get; set; }
+
+        [MaxLength(4000)]
         public string Comment { get; set; }
         public virtual Product Product { get; set; }
         public virtual User User { get; set; }

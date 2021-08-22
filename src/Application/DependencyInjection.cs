@@ -57,6 +57,7 @@ namespace Application
             services.AddTransient<IPaymentRepository, PaymentRepository>();
             services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
             services.AddTransient<IUserCredentialRepository, UserCredentialRepository>();
+            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
 
             // Adding manager services
             services.AddTransient(typeof(IBaseManager<>), typeof(BaseManager<>));

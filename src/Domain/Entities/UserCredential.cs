@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,10 +18,13 @@ namespace Domain.Entities
         public string Email { get; set; }
 
         [Required]
+        public bool EmailVerified { get; set; }
+
+        [Required, MaxLength(100)]
         public string Password { get; set; }
 
         [Required]
-        public string Role { get; set; }
+        public UserRole Role { get; set; } = UserRole.Customer;
 
         [Required]
         public DateTime LastLogin { get; set; } = DateTime.UtcNow;

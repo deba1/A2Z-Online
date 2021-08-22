@@ -22,7 +22,21 @@ namespace Infrastructure.Persistence
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserCredential> UserCredentials { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public DbContext Instance => this;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserCredential>(entity =>
+            {
+                entity.HasIndex(u => u.Email).IsUnique();
+            });
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.HasIndex(t => t.Token).IsUnique();
+            });
+        }
     }
 }

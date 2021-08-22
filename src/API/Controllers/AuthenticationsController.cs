@@ -37,6 +37,21 @@ namespace API.Controllers
             return (result != null) ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Email or Password does not match."));
         }
 
+        [AllowAnonymous]
+        [HttpPost("RefreshToken")]
+        public async Task<ActionResult<RefreshTokenResponseDTO>> RefreshToken(RefreshTokenRequestDTO tokenRequestDTO)
+        {
+            var result = await _authenticationManager.RefreshToken(tokenRequestDTO);
+            return result != null ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Invalid Token"));
+        }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout(RefreshTokenRequestDTO tokenRequestDTO)
+        {
+            var result = await _authenticationManager.Logout(tokenRequestDTO);
+            return result > 0 ? NoContent() : BadRequest(_apiResponseDTO.SetApiResponse("Logout failed"));
+        }
+
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
