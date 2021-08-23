@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.AuthenticationDTOs;
-using Application.Interfaces;
+using Application.Interfaces.EncyptionInterfaces;
 using Application.Repositories;
 using Application.Services.DbServices;
 using AutoMapper;
@@ -109,7 +109,7 @@ namespace Application.Managers
             catch
             {
                 await transaction.RollbackAsync();
-                return null;
+                throw;
             }
         }
 

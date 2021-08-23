@@ -1,6 +1,6 @@
 ﻿using Application.Interfaces;
+using Application.Interfaces.DBContextInterfaces;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Repositories
 {
@@ -11,11 +11,11 @@ namespace Application.Repositories
 
     class GlobalConfigurationRepository : BaseRepository<GlobalConfiguration>, IGlobalConfigurationRepository
     {
-        private readonly DbContext _context;
+        private readonly IAppDbContext _context;
 
         public GlobalConfigurationRepository(IAppDbContext context) : base(context)
         {
-            _context = context.Instance;
+            _context = context;
         }
     }
 }

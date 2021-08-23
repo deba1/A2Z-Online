@@ -2,8 +2,11 @@
 
 namespace Application.DTOs.EntityDTOs
 {
-    public class InventoryDTO
+    public class OrderItemDTO
     {
+        [Required]
+        public int OrderId { get; set; }
+
         [Required]
         public int ProductId { get; set; }
 
@@ -12,6 +15,6 @@ namespace Application.DTOs.EntityDTOs
 
         [Required]
         [RegularExpression(@"^\d{1,18}(\.\d{1,2}){0,1}$")]
-        public decimal UnitPrice { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using Domain.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.DTOs
+namespace Application.DTOs.EntityDTOs
 {
     public class UserCredentialDTO
     {

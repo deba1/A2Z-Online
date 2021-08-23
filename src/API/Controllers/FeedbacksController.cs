@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.EntityDTOs;
+using Application.Extensions;
 using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
+            feedbackDTO.UserId = HttpContext.GetUserId();
             var feedback = await _feedbackManager.Add(feedbackDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = feedback.Id }, feedback);

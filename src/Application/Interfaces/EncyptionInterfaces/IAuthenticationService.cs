@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.EncyptionInterfaces
 {
     public interface IAuthenticationService
     {

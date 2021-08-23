@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.DTOs.ResponseDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,5 +9,6 @@ namespace API.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
+        protected IApiResponseDTO _apiResponseDTO;
     }
 }

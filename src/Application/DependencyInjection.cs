@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Application.Services;
+﻿using Application.Services;
 using Application.Services.DbServices;
 using Application.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +9,7 @@ using System.Text;
 using Application.Managers;
 using Application.DTOs.ResponseDTOs;
 using Application.Services.EncryptionServices;
+using Application.Interfaces.EncyptionInterfaces;
 
 namespace Application
 {
@@ -17,6 +17,8 @@ namespace Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            #region Jwt Service
+
             var jwtSection = config.GetSection("JWT");
 
             services.AddAuthentication(opt =>
@@ -38,12 +40,20 @@ namespace Application
                 };
             });
 
+            #endregion
+
+            #region Application Service
+
             // Adding application services.
             services.AddTransient<IAuthenticationService, JwtService>();
             services.AddTransient<ITransactionService, TransactionService>();
-            services.AddTransient<IEncryptionService, Sha256EncryptionService>();
+            services.AddTransient<IEncryptionService, BCryptEncryptionService>();
 
             services.AddAutoMapper(typeof(DependencyInjection));
+
+            #endregion
+
+            #region Repository Service
 
             // Adding repository services.
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
@@ -58,6 +68,11 @@ namespace Application
             services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
             services.AddTransient<IUserCredentialRepository, UserCredentialRepository>();
             services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddTransient(typeof(IBaseSecondLevelRepository<,>), typeof(BaseSecondLevelRepository<,>));
+
+            #endregion
+
+            #region Manager Service
 
             // Adding manager services
             services.AddTransient(typeof(IBaseManager<>), typeof(BaseManager<>));
@@ -73,6 +88,8 @@ namespace Application
             services.AddTransient<IUserCredentialManager, UserCredentialManager>();
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
             services.AddTransient<IApiResponseDTO, ApiResponseDTO>();
+
+            #endregion
 
             return services;
         }

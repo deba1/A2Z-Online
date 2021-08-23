@@ -2,11 +2,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.DTOs
+namespace Application.DTOs.EntityDTOs
 {
     public class OrderDTO
     {
-        [Required]
         public int UserId { get; set; }
 
         [Required]

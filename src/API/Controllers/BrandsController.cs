@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.EntityDTOs;
 using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -73,6 +73,23 @@ namespace API.Controllers
             return NotFound();
         }
 
-        #endregion 
+        #endregion
+
+        #region Product
+
+        [HttpGet("{brandId}/products")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllBrandProducts(int brandId)
+        {
+            return Ok(await _brandManager.GetAllBrandProducts(brandId));
+        }
+
+        [HttpGet("{brandId}/products/{productId}")]
+        public async Task<ActionResult<ProductDTO>> GetBrandProducttById(int brandId, int productId)
+        {
+            var result = await _brandManager.GetBrandProductById(brandId, productId);
+            return (result != null) ? Ok(result) : NotFound();
+        }
+
+        #endregion
     }
 }
