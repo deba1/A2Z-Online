@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.DBContextInterfaces;
+﻿using Application.Interfaces.DBContextInterfaces;
 using Domain.Entities;
 
 namespace Application.Repositories

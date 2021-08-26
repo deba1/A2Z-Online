@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces.DBContextInterfaces;
 using Application.Services.JwtServices;
-using AutoMapper.Configuration;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,22 +17,22 @@ namespace Application.Repositories
     }
     class RefreshTokenRepository : IRefreshTokenRepository
     {
-        private readonly DbContext _context;
+        private readonly IAppDbContext _context;
         private readonly IJwtConfigurationServiceModel _jwtConfigurationServiceModel;
 
-        public RefreshTokenRepository(IAppDbContext dbContext, IJwtConfigurationServiceModel jwtConfigurationServiceModel)
+        public RefreshTokenRepository(IAppDbContext context, IJwtConfigurationServiceModel jwtConfigurationServiceModel)
         {
-            _context = dbContext.Instance;
+            _context = context;
             _jwtConfigurationServiceModel = jwtConfigurationServiceModel;
         }
 
-        private DbSet<RefreshToken> DbTable => _context.Set<RefreshToken>();
+        private DbSet<RefreshToken> DbTable => _context.Instance.Set<RefreshToken>();
 
         public async Task<int> Add(RefreshToken refreshToken)
         {
             refreshToken.CreatedAt = DateTime.UtcNow;
             DbTable.Add(refreshToken);
-            return await _context.SaveChangesAsync();
+            return await _context.Instance.SaveChangesAsync();
         }
 
         public async Task<int> Add(string refreshToken, int userId, DateTime? expiredAt = null)
@@ -57,14 +56,14 @@ namespace Application.Repositories
         public async Task<int> Remove(RefreshToken refreshToken)
         {
             DbTable.Remove(refreshToken);
-            return await _context.SaveChangesAsync();
+            return await _context.Instance.SaveChangesAsync();
         }
 
         public async Task<int> Update(RefreshToken refreshToken)
         {
             refreshToken.ModifiedAt = DateTime.UtcNow;
-            _context.Entry(refreshToken).State = EntityState.Modified;
-            return await _context.SaveChangesAsync();
+            _context.Instance.Entry(refreshToken).State = EntityState.Modified;
+            return await _context.Instance.SaveChangesAsync();
         }
     }
 }
