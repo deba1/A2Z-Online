@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces.EncyptionInterfaces;
 using Application.Services.JwtServices;
 using Domain.Entities;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,11 +11,13 @@ using System.Text;
 
 namespace Application.Services
 {
-    class JwtService : JwtConfigurationServiceModel, IAuthenticationService
+    class JwtService : IAuthenticationService
     {
-        public JwtService(IConfiguration config) : base(config)
-        {
+        private readonly IJwtConfigurationServiceModel _jwtConfigurationServiceModel;
 
+        public JwtService(IJwtConfigurationServiceModel jwtConfigurationServiceModel)
+        {
+            _jwtConfigurationServiceModel = jwtConfigurationServiceModel;
         }
 
         public Claim[] Claims { get; set; }
@@ -34,11 +35,11 @@ namespace Application.Services
         private JwtSecurityToken GetSecurityToken(Claim[] claims, bool refreshToken = false)
         {
             return new JwtSecurityToken(
-                issuer: Issuer,
-                audience: Audience,
-                expires: refreshToken ? DateTime.UtcNow.Add(RefreshTokenLifetime) : DateTime.UtcNow.AddMinutes(ValidationTime), // Token validation time.
+                issuer: _jwtConfigurationServiceModel.Issuer,
+                audience: _jwtConfigurationServiceModel.Audience,
+                expires: DateTime.UtcNow.Add(refreshToken ? _jwtConfigurationServiceModel.RefreshTokenValidationTime : _jwtConfigurationServiceModel.AccessTokenValidationTime), // Token validation time.
                 claims: claims,
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshToken ? RefreshKey : Key)), SecurityAlgorithms.HmacSha256)
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshToken ? _jwtConfigurationServiceModel.RefreshKey : _jwtConfigurationServiceModel.Key)), SecurityAlgorithms.HmacSha256)
             );
         }
 
@@ -81,11 +82,11 @@ namespace Application.Services
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshToken ? RefreshKey : Key)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshToken ? _jwtConfigurationServiceModel.RefreshKey : _jwtConfigurationServiceModel.Key)),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidIssuer = Issuer,
-                    ValidAudience = Audience,
+                    ValidIssuer = _jwtConfigurationServiceModel.Issuer,
+                    ValidAudience = _jwtConfigurationServiceModel.Audience,
 
                     // Set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
@@ -106,7 +107,7 @@ namespace Application.Services
             try
             {
                 var claims = GetClaimsFromToken(token);
-                
+
                 if (claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.AuthenticationMethod))?.Value == "RefreshToken")
                 {
                     return null;

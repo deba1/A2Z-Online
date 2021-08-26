@@ -78,7 +78,8 @@ namespace Application.Managers
 
             LoginResponseDTO loginResponseDTO = new()
             {
-                User = userCredential.User,
+                UserId = userCredential.Id,
+                Role = userCredential.Role,
                 AccessToken = _authenticationService.CreateToken(userCredential),
                 RefreshToken = refreshToken
             };

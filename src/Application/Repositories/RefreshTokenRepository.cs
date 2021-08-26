@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces.DBContextInterfaces;
+using Application.Services.JwtServices;
+using AutoMapper.Configuration;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,13 +16,15 @@ namespace Application.Repositories
         Task<int> Update(RefreshToken refreshToken);
         Task<int> Remove(RefreshToken refreshToken);
     }
-    public class RefreshTokenRepository : IRefreshTokenRepository
+    class RefreshTokenRepository : IRefreshTokenRepository
     {
         private readonly DbContext _context;
+        private readonly IJwtConfigurationServiceModel _jwtConfigurationServiceModel;
 
-        public RefreshTokenRepository(IAppDbContext dbContext)
+        public RefreshTokenRepository(IAppDbContext dbContext, IJwtConfigurationServiceModel jwtConfigurationServiceModel)
         {
             _context = dbContext.Instance;
+            _jwtConfigurationServiceModel = jwtConfigurationServiceModel;
         }
 
         private DbSet<RefreshToken> DbTable => _context.Set<RefreshToken>();
@@ -40,7 +44,7 @@ namespace Application.Repositories
                 Invalidated = false,
                 Used = false,
                 JwtId = Guid.NewGuid().ToString(),
-                ExpiryDate = expiredAt ?? DateTime.UtcNow.AddDays(30),
+                ExpiryDate = expiredAt ?? DateTime.UtcNow.Add(_jwtConfigurationServiceModel.RefreshTokenValidationTime),
                 UserId = userId
             });
         }
