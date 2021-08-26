@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.EntityDTOs;
 using Application.Extensions;
 using Application.Managers;
 using Microsoft.AspNetCore.Mvc;

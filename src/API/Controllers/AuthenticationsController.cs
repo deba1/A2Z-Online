@@ -1,5 +1,5 @@
-﻿using Application.DTOs;
-using Application.DTOs.AuthenticationDTOs;
+﻿using Application.DTOs.AuthenticationDTOs;
+using Application.DTOs.EntityDTOs;
 using Application.DTOs.ResponseDTOs;
 using Application.Extensions;
 using Application.Managers;
@@ -34,6 +34,21 @@ namespace API.Controllers
         {
             var result = await _authenticationManager.LoginUser(loginRequestDTO);
             return (result != null) ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Email or Password does not match."));
+        }
+
+        [AllowAnonymous]
+        [HttpPost("RefreshToken")]
+        public async Task<ActionResult<RefreshTokenResponseDTO>> RefreshToken(RefreshTokenRequestDTO tokenRequestDTO)
+        {
+            var result = await _authenticationManager.RefreshToken(tokenRequestDTO.RefreshToken);
+            return result != null ? Ok(result) : BadRequest(_apiResponseDTO.SetApiResponse("Invalid Token"));
+        }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout(RefreshTokenRequestDTO tokenRequestDTO)
+        {
+            var result = await _authenticationManager.Logout(tokenRequestDTO.RefreshToken);
+            return result != null ? NoContent() : BadRequest(_apiResponseDTO.SetApiResponse("Logout failed"));
         }
 
         [HttpPost("ChangePassword")]

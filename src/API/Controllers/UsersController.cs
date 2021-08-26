@@ -1,7 +1,5 @@
-﻿using Application.Managers;
-using Application.DTOs;
-using AutoMapper;
-using Domain.Entities;
+﻿using Application.DTOs.EntityDTOs;
+using Application.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -64,11 +62,11 @@ namespace API.Controllers
         #endregion
 
         #region Feedback
-     
+
         [HttpGet("{userId}/feedbacks")]
         public async Task<ActionResult<IEnumerable<FeedbackDTO>>> Getfeedbacks(int userId)
         {
-             return Ok(await _userManager.GetAllFeedbacks(userId));
+            return Ok(await _userManager.GetAllFeedbacks(userId));
         }
 
         [HttpGet("{userId}/feedbacks/{feedbackId}")]

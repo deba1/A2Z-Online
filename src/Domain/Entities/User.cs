@@ -8,18 +8,8 @@ namespace Domain.Entities
 {
     public class User : BaseEntity
     {
-        [Required]
+        [Required, MaxLength(25)]
         public string Name { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        public bool EmailVerified { get; set; }
-
-        [Required]
-        public UserRole Role { get; set; }
 
         [Required]
         public Gender Gender { get; set; }
@@ -27,10 +17,10 @@ namespace Domain.Entities
         [Required]
         public DateTime DateOfBirth { get; set; }
 
-        [Required]
+        [Required, MaxLength(25)]
         public string MobileNo { get; set; }
 
-        [Required]
+        [Required, MaxLength(4000)]
         public string Address { get; set; }
 
         [JsonIgnore]

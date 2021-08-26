@@ -11,10 +11,10 @@ namespace Domain.Entities
         [Required]
         public int UserId { get; set; }
 
-        [Required]
+        [Required, MaxLength(4000)]
         public string ShippingAddress { get; set; }
 
-        [Required]
+        [Required, MaxLength(25)]
         public string Phone { get; set; }
 
         [Required]

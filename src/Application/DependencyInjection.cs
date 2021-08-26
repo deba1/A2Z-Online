@@ -10,6 +10,7 @@ using Application.Managers;
 using Application.DTOs.ResponseDTOs;
 using Application.Services.EncryptionServices;
 using Application.Interfaces.EncyptionInterfaces;
+using Application.Services.JwtServices;
 
 namespace Application
 {
@@ -48,6 +49,7 @@ namespace Application
             services.AddTransient<IAuthenticationService, JwtService>();
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IEncryptionService, BCryptEncryptionService>();
+            services.AddTransient<IJwtConfigurationServiceModel, JwtConfigurationServiceModel>();
 
             services.AddAutoMapper(typeof(DependencyInjection));
 
@@ -67,6 +69,7 @@ namespace Application
             services.AddTransient<IPaymentRepository, PaymentRepository>();
             services.AddTransient<IGlobalConfigurationRepository, GlobalConfigurationRepository>();
             services.AddTransient<IUserCredentialRepository, UserCredentialRepository>();
+            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddTransient(typeof(IBaseSecondLevelRepository<,>), typeof(BaseSecondLevelRepository<,>));
 
             #endregion

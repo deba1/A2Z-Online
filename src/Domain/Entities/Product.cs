@@ -7,18 +7,22 @@ namespace Domain.Entities
 {
     public class Product : BaseEntity
     {
-        [Required]
+        [Required, MaxLength(255)]
         public string Name { get; set; }
 
-        [Required]
+        [Required, MaxLength(4000)]
         public string Description { get; set; }
 
         [Required]
         public decimal Price { get; set; }
 
-        [Required]
+        [Required, MaxLength(255)]
         public string Thumbnail { get; set; }
+
+        [MaxLength(4000)]
         public string Images { get; set; }
+
+        [MaxLength(4000)]
         public string AdditionalFields { get; set; }
 
         [Required]

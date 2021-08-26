@@ -16,5 +16,6 @@ namespace Application.Interfaces.DBContextInterfaces
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserCredential> UserCredentials { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

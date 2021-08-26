@@ -3,7 +3,18 @@ using System;
 
 namespace Application.Services.JwtServices
 {
-    class JwtConfigurationServiceModel
+    public interface IJwtConfigurationServiceModel
+    {
+        string Audience { get; }
+        string Issuer { get; }
+        IConfigurationSection JwtSection { get; }
+        string Key { get; }
+        string RefreshKey { get; }
+        TimeSpan RefreshTokenValidationTime { get; }
+        TimeSpan AccessTokenValidationTime { get; }
+    }
+
+    class JwtConfigurationServiceModel : IJwtConfigurationServiceModel
     {
         private readonly IConfiguration _config;
 
@@ -12,29 +23,33 @@ namespace Application.Services.JwtServices
             _config = config;
         }
 
-        protected IConfigurationSection JwtSection
+        public IConfigurationSection JwtSection
         {
             get => _config.GetSection("JWT");
         }
 
-        protected string Issuer
+        public string Issuer
         {
             get => JwtSection.GetSection("Issuer").Value;
         }
 
-        protected string Audience
+        public string Audience
         {
             get => JwtSection.GetSection("Audience").Value;
         }
 
-        protected string Key
+        public string Key
         {
             get => JwtSection.GetSection("Key").Value;
         }
 
-        protected int ValidationTime
+        public string RefreshKey
         {
-            get => Convert.ToInt32(JwtSection.GetSection("ValidationTime").Value);
+            get => JwtSection.GetSection("RefreshKey").Value;
         }
+
+        public TimeSpan AccessTokenValidationTime => TimeSpan.Parse(JwtSection.GetSection("AccessTokenValidationTime").Value);
+
+        public TimeSpan RefreshTokenValidationTime => TimeSpan.Parse(JwtSection.GetSection("RefreshTokenValidationTime").Value);
     }
 }

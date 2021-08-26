@@ -9,23 +9,23 @@ namespace Domain.Entities
         [Required]
         public int OrderId { get; set; }
 
-        [Required]
+        [Required, MaxLength(25)]
         public string Method { get; set; }
 
         [Required]
         [RegularExpression(@"^\d{1,18}(\.\d{1,2}){0,1}$")]
         public decimal TotalAmount { get; set; }
 
-        [Required]
+        [Required, MaxLength(10)]
         public string Currency { get; set; }
 
-        [Required]
+        [Required, MaxLength(25)]
         public string Status { get; set; }
 
-        [Required]
+        [Required, MaxLength(50)]
         public string TransactionId { get; set; }
 
-        [Required]
+        [Required, MaxLength(255)]
         public string SessionKey { get; set; }
 
         [Required]
