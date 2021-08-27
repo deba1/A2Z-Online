@@ -16,11 +16,11 @@ namespace Application.Repositories
 
     class UserCredentialRepository : BaseRepository<UserCredential>, IUserCredentialRepository
     {
-        private readonly DbContext _context;
+        private readonly IAppDbContext _context;
 
         public UserCredentialRepository(IAppDbContext context) : base(context)
         {
-            _context = context.Instance;
+            _context = context;
         }
 
         #region Login
@@ -35,8 +35,8 @@ namespace Application.Repositories
             var userCredential = await GetById(id);
             userCredential.LastLogin = DateTime.UtcNow;
 
-            _context.Entry(userCredential).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.Instance.Entry(userCredential).State = EntityState.Modified;
+            await _context.Instance.SaveChangesAsync();
 
             return true;
         }
@@ -50,8 +50,8 @@ namespace Application.Repositories
             var userCredential = await GetById(id);
             userCredential.Password = password;
 
-            _context.Entry(userCredential).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.Instance.Entry(userCredential).State = EntityState.Modified;
+            await _context.Instance.SaveChangesAsync();
 
             return true;
         }

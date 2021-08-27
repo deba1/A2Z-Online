@@ -21,10 +21,7 @@ namespace Application.Repositories
             _context = context.Instance;
         }
 
-        protected virtual DbSet<TTwo> DbSecondLevelTable
-        {
-            get => _context.Set<TTwo>();
-        }
+        protected virtual DbSet<TTwo> DbSecondLevelTable => _context.Set<TTwo>();
 
         public async Task<ICollection<TTwo>> GetAllSecondLevel(int tOneId, string property)
         {
