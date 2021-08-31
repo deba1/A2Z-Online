@@ -2,7 +2,7 @@
 
 namespace Application.Services.EncryptionServices
 {
-    class BCryptEncryptionService : IEncryptionService
+    public class BCryptEncryptionService : IEncryptionService
     {
         public string GenerateHash(string plainText)
         {

@@ -8,7 +8,7 @@ namespace Application.Managers
 {
     public interface IBaseManager<T> where T : class
     {
-        Task<ICollection<T>> GetAll();
+        Task<List<T>> GetAll();
         Task<T> GetById(int id);
         Task<T> Add<DTOType>(DTOType entity);
         Task<int> Update<DTOType>(T entity, DTOType dtoEntity);
@@ -33,7 +33,7 @@ namespace Application.Managers
             return entity;
         }
 
-        public async virtual Task<ICollection<T>> GetAll()
+        public async virtual Task<List<T>> GetAll()
         {
             return await _baseRepository.GetAll();
         }

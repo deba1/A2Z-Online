@@ -9,7 +9,7 @@ namespace Application.Repositories
 {
     public interface IBaseRepository<T> where T : class
     {
-        Task<ICollection<T>> GetAll();
+        Task<List<T>> GetAll();
         Task<T> GetById(int id);
         Task<int> Add(T entity);
         Task<int> Update(T entity);
@@ -36,7 +36,7 @@ namespace Application.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async virtual Task<ICollection<T>> GetAll()
+        public async virtual Task<List<T>> GetAll()
         {
             return await DbTable.ToListAsync();
         }
