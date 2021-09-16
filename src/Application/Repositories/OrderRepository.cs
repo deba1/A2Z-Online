@@ -9,7 +9,7 @@ namespace Application.Repositories
 {
     public interface IOrderRepository : IBaseRepository<Order>
     {
-        Task<ICollection<OrderItem>> GetAllOrderItems(int orderId);
+        Task<List<OrderItem>> GetAllOrderItems(int orderId);
         Task<OrderItem> GetOrderOrderItemById(int orderId, int orderItemsId);
     }
 
@@ -24,7 +24,7 @@ namespace Application.Repositories
 
         #region Order-item
 
-        public async Task<ICollection<OrderItem>> GetAllOrderItems(int tOneId)
+        public async Task<List<OrderItem>> GetAllOrderItems(int tOneId)
         {
             return await _context.OrderItems.Where(x => x.OrderId.Equals(tOneId))
                 .Include(p => p.Product).ToListAsync();

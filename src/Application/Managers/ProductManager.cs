@@ -8,9 +8,9 @@ namespace Application.Managers
 {
     public interface IProductManager : IBaseManager<Product>
     {
-        Task<ICollection<Feedback>> GetAllFeedbacksProducts(int productId);
+        Task<List<Feedback>> GetAllFeedbacksProducts(int productId);
         Task<Feedback> GetFeedbacksByProductId(int productId, int feedbackId);
-        Task<ICollection<Inventory>> GetAllInventorys(int productId);
+        Task<List<Inventory>> GetAllInventorys(int productId);
         Task<Inventory> GetProductInventoryById(int productId, int inventoryId);
     }
 
@@ -28,7 +28,7 @@ namespace Application.Managers
 
         #region Feedback
 
-        public async Task<ICollection<Feedback>> GetAllFeedbacksProducts(int productId)
+        public async Task<List<Feedback>> GetAllFeedbacksProducts(int productId)
         {
             return await _productRepository.GetAllFeedbacksProducts(productId);
         }
@@ -42,7 +42,7 @@ namespace Application.Managers
 
         #region Inventory
 
-        public async Task<ICollection<Inventory>> GetAllInventorys(int productId)
+        public async Task<List<Inventory>> GetAllInventorys(int productId)
         {
             return await _productInventoryRepository.GetAllSecondLevel(productId, "ProductId");
         }

@@ -9,7 +9,7 @@ namespace Application.Repositories
 {
     public interface IBaseSecondLevelRepository<TOne, TTwo> where TOne : BaseEntity where TTwo : BaseEntity 
     {
-        Task<ICollection<TTwo>> GetAllSecondLevel(int tOneId, string property);
+        Task<List<TTwo>> GetAllSecondLevel(int tOneId, string property);
         Task<TTwo> GetSecondLevelById(int tOneId, int tTwoId, string property);
     }
 
@@ -23,7 +23,7 @@ namespace Application.Repositories
 
         protected virtual DbSet<TTwo> DbSecondLevelTable => _context.Set<TTwo>();
 
-        public async Task<ICollection<TTwo>> GetAllSecondLevel(int tOneId, string property)
+        public async Task<List<TTwo>> GetAllSecondLevel(int tOneId, string property)
         {
             return await DbSecondLevelTable.Where(x => (int)x[property] == tOneId).ToListAsync();
         }

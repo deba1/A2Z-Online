@@ -9,7 +9,7 @@ namespace Application.Repositories
 {
     public interface IUserRepository : IBaseRepository<User>
     {
-        Task<ICollection<Feedback>> GetAllFeedbacks(int userId);
+        Task<List<Feedback>> GetAllFeedbacks(int userId);
     }
 
     class UserReposity : BaseRepository<User>, IUserRepository
@@ -23,7 +23,7 @@ namespace Application.Repositories
 
         #region Feedback
 
-        public async Task<ICollection<Feedback>> GetAllFeedbacks(int tOneId)
+        public async Task<List<Feedback>> GetAllFeedbacks(int tOneId)
         {
             return await _context.Feedbacks.Where(x => x.UserId.Equals(tOneId))
                 .Include(p => p.Product).ToListAsync();
