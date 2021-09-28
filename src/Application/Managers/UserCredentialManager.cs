@@ -12,6 +12,7 @@ namespace Application.Managers
         Task<bool> CheckOldPassword(int id, string oldPassword);
         Task<bool> ChangePassword(int id, string password);
         Task<bool> UpdateLastLogin(int id);
+        Task<bool> EmailExists(string email);
     }
 
     public class UserCredentialManager : BaseManager<UserCredential>, IUserCredentialManager
@@ -52,6 +53,11 @@ namespace Application.Managers
         public async Task<bool> ChangePassword(int id, string password)
         {
             return await _userCredentialRepository.ChangePassword(id, _encryptionService.GenerateHash(password));
+        }
+
+        public async Task<bool> EmailExists(string email)
+        {
+            return (await _userCredentialRepository.GetByEmail(email)) != null;
         }
     }
 }

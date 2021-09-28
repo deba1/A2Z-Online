@@ -22,7 +22,7 @@ namespace Application.Extensions
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         context.Response.ContentType = "application/json";
 
-                        string errorMessage = contextFeature.Error.GetType() == typeof(BaseException) ? contextFeature.Error.Message : "Internal Server Error.";
+                        string errorMessage = contextFeature.Error.GetType() == typeof(BaseException) ? contextFeature.Error.Message : contextFeature.Error.InnerException?.Message ?? "Internal Server Error";
 
                         var errorResponse = new ErrorDetailsDTO
                         {

@@ -11,6 +11,7 @@ using Application.DTOs.ResponseDTOs;
 using Application.Services.EncryptionServices;
 using Application.Interfaces.EncyptionInterfaces;
 using Application.Services.JwtServices;
+using Application.Validators;
 
 namespace Application
 {
@@ -64,6 +65,7 @@ namespace Application
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
             services.AddTransient<IInventoryRepository, InventoryRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrderItemRepository, OrderItemRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IUserRepository, UserReposity>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();

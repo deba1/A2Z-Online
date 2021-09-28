@@ -36,7 +36,7 @@ namespace API.Controllers
         public async Task<ActionResult<OrderDTO>> Add([FromBody] OrderDTO orderDTO)
         {
             orderDTO.UserId = HttpContext.GetUserId();
-            var order = await _orderManager.Add(orderDTO);
+            var order = await _orderManager.NewOrder(orderDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
         }
