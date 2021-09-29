@@ -4,7 +4,7 @@ using FluentValidation;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Validators
+namespace Application.Validators.AuthenticationDTOValidator
 {
     public class RegisterValidator : AbstractValidator<RegisterDTO>
     {

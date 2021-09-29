@@ -2,7 +2,7 @@
 using Application.Repositories;
 using FluentValidation;
 
-namespace Application.Validators
+namespace Application.Validators.EntityDTOValidator
 {
     public class OrderValidator : AbstractValidator<OrderDTO>
     {

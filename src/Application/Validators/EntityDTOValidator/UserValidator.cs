@@ -2,7 +2,7 @@
 using Domain.Enums;
 using FluentValidation;
 
-namespace Application.Validators
+namespace Application.Validators.EntityDTOValidator
 {
     public class UserValidator : AbstractValidator<UserDTO>
     {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Application.DTOs.AuthenticationDTOs
+﻿namespace Application.DTOs.AuthenticationDTOs
 {
     public class LoginRequestDTO
     {

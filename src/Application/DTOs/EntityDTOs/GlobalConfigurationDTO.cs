@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Application.DTOs.EntityDTOs
+﻿namespace Application.DTOs.EntityDTOs
 {
     public class GlobalConfigurationDTO
     {

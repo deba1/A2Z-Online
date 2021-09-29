@@ -1,7 +1,7 @@
 ﻿using Application.DTOs.EntityDTOs;
 using FluentValidation;
 
-namespace Application.Validators
+namespace Application.Validators.EntityDTOValidator
 {
     public class GlobalConfigurationValidator : AbstractValidator<GlobalConfigurationDTO>
     {

@@ -1,6 +1,5 @@
 ﻿using Domain.Enums;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.AuthenticationDTOs
 {
