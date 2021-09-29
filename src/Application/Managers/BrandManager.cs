@@ -8,7 +8,7 @@ namespace Application.Managers
 {
     public interface IBrandManager : IBaseManager<Brand>
     {
-        Task<ICollection<Product>> GetAllBrandProducts(int brandId);
+        Task<List<Product>> GetAllBrandProducts(int brandId);
         Task<Product> GetBrandProductById(int brandId, int productId);
     }
 
@@ -25,7 +25,7 @@ namespace Application.Managers
 
         #region Product
 
-        public async Task<ICollection<Product>> GetAllBrandProducts(int brandId)
+        public async Task<List<Product>> GetAllBrandProducts(int brandId)
         {
             return await _brandProductRepository.GetAllSecondLevel(brandId, "BrandId");
         }

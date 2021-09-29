@@ -8,7 +8,7 @@ namespace Application.Managers
 {
     public interface ICategoryManager : IBaseManager<Category>
     {
-        Task<ICollection<Product>> GetAllCategoryProducts(int categoryId);
+        Task<List<Product>> GetAllCategoryProducts(int categoryId);
         Task<Product> GetCategoryProductById(int categoryId, int productId);
     }
 
@@ -25,7 +25,7 @@ namespace Application.Managers
 
         #region Product
 
-        public async Task<ICollection<Product>> GetAllCategoryProducts(int categoryId)
+        public async Task<List<Product>> GetAllCategoryProducts(int categoryId)
         {
             return await _categoryProductRepository.GetAllSecondLevel(categoryId, "CategoryId");
         }

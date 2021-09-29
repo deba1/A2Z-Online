@@ -8,9 +8,9 @@ namespace Application.Managers
 {
     public interface IUserManager : IBaseManager<User>
     {
-        Task<ICollection<Feedback>> GetAllFeedbacks(int userId);
+        Task<List<Feedback>> GetAllFeedbacks(int userId);
         Task<Feedback> GetFeedbackByUserId(int userId, int feedbackId);
-        Task<ICollection<Order>> GetAllOrders(int userId);
+        Task<List<Order>> GetAllOrders(int userId);
         Task<Order> GetOrderById(int userId, int orderId);
     }
     class UserManager: BaseManager<User>, IUserManager
@@ -27,7 +27,7 @@ namespace Application.Managers
         }
 
         #region Feedback
-        public async Task<ICollection<Feedback>> GetAllFeedbacks(int userId)
+        public async Task<List<Feedback>> GetAllFeedbacks(int userId)
         {
             return await _userRepository.GetAllFeedbacks(userId);
         }
@@ -41,7 +41,7 @@ namespace Application.Managers
 
         #region Orders
 
-        public async Task<ICollection<Order>> GetAllOrders(int userId)
+        public async Task<List<Order>> GetAllOrders(int userId)
         {
             return await _userOrderRepository.GetAllSecondLevel(userId, "UserId");
         }

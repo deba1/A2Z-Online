@@ -11,11 +11,11 @@ namespace Application.Managers
 {
     public interface IOrderManager : IBaseManager<Order>
     {
-        Task<Order> NewOrder(OrderDTO orderDTO);
-        Task<ICollection<Payment>> GetAllPayments(int orderId);
+        Task<List<Payment>> GetAllPayments(int orderId);
         Task<Payment> GetOrderPaymentById(int orderId, int paymentId);
-        Task<ICollection<OrderItem>> GetAllOrderItems(int orderId);
+        Task<List<OrderItem>> GetAllOrderItems(int orderId);
         Task<OrderItem> GetOrderOrderItemById(int orderId, int orderItemId);
+        Task<Order> NewOrder(OrderDTO orderDTO);
     }
 
     class OrderManager : BaseManager<Order>, IOrderManager
@@ -69,7 +69,7 @@ namespace Application.Managers
 
         #region Payments
 
-        public async Task<ICollection<Payment>> GetAllPayments(int orderId)
+        public async Task<List<Payment>> GetAllPayments(int orderId)
         {
             return await _orderPaymentRepository.GetAllSecondLevel(orderId, "OrderId");
         }
@@ -83,7 +83,7 @@ namespace Application.Managers
 
         #region OrderItems
 
-        public async Task<ICollection<OrderItem>> GetAllOrderItems(int orderId)
+        public async Task<List<OrderItem>> GetAllOrderItems(int orderId)
         {
             return await _orderRepository.GetAllOrderItems(orderId);
         }
