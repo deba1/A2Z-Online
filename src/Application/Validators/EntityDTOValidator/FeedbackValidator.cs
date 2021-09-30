@@ -11,7 +11,7 @@ namespace Application.Validators.EntityDTOValidator
             RuleFor(t => t.ProductId)
                 .Required()
                 .MustAsync(async (t, _) => (await productRepository.GetById(t)) != null)
-                .WithMessage("Product doesn't exit.");
+                .WithMessage("Product doesn't exist.");
 
             RuleFor(t => t.Score)
                 .GreaterThanOrEqualTo(1)

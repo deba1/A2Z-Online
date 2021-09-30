@@ -8,13 +8,15 @@ namespace Application.Validators.AuthenticationDTOValidator
         public ChangePasswordValidator()
         {
             RuleFor(t => t.OldPassword)
-                .Required();
+                .Required()
+                .StringRange(5, 50);
 
             RuleFor(t => t.NewPassword)
-                .Required();
+                .Required()
+                .StringRange(5, 50);
 
             RuleFor(t => t.RepeatPassword)
-                .Equal(t => t.OldPassword)
+                .Equal(t => t.NewPassword)
                 .WithMessage("Password and repeat does not match");
         }
     }

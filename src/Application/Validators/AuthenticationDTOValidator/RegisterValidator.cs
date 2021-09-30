@@ -25,8 +25,6 @@ namespace Application.Validators.AuthenticationDTOValidator
                 .WithMessage("Email already registered");
 
             RuleFor(t => t.Gender)
-                .NotEmpty()
-                .WithMessage("Gender is Required")
                 .IsInEnum()
                 .WithMessage("Invalid Gender.");
 
