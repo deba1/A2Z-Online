@@ -3,6 +3,9 @@ using Application.Repositories;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Application.DTOs.EntityDTOs;
+using Microsoft.EntityFrameworkCore.Storage;
+using Application.Services.DbServices;
 
 namespace Application.Managers
 {
@@ -12,22 +15,58 @@ namespace Application.Managers
         Task<Payment> GetOrderPaymentById(int orderId, int paymentId);
         Task<List<OrderItem>> GetAllOrderItems(int orderId);
         Task<OrderItem> GetOrderOrderItemById(int orderId, int orderItemId);
+        Task<Order> NewOrder(OrderDTO orderDTO);
     }
 
     class OrderManager : BaseManager<Order>, IOrderManager
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderItemRepository _orderItemRepository;
         private readonly IMapper _mapper;
         private readonly IBaseSecondLevelRepository<Order, Payment> _orderPaymentRepository;
+        private readonly ITransactionService _transactionService;
 
-        public OrderManager(IOrderRepository orderRepository, IMapper mapper, 
-            IBaseSecondLevelRepository<Order, Payment> orderPaymentRepository
+        public OrderManager(
+            IOrderRepository orderRepository,
+            IOrderItemRepository orderItemRepository,
+            IMapper mapper, 
+            IBaseSecondLevelRepository<Order, Payment> orderPaymentRepository,
+            ITransactionService transactionService
             ) 
             : base(orderRepository, mapper)
         {
             _orderRepository = orderRepository;
+            _orderItemRepository = orderItemRepository;
             _mapper = mapper;
             _orderPaymentRepository = orderPaymentRepository;
+            _transactionService = transactionService;
+        }
+
+        public async Task<Order> NewOrder(OrderDTO orderDTO)
+        {
+            using IDbContextTransaction transaction = _transactionService.GetTransaction();
+            try
+            {
+                var orderItemList = new List<OrderItemDTO>(orderDTO.OrderItems);
+                orderDTO.OrderItems = new List<OrderItemDTO>();
+                Order order = _mapper.Map<Order>(orderDTO);
+                await _orderRepository.Add(order);
+
+                foreach (var item in orderItemList)
+                {
+                    OrderItem orderItem = _mapper.Map<OrderItem>(item);
+                    orderItem.OrderId = order.Id;
+                    await _orderItemRepository.Add(orderItem);
+                }
+
+                await transaction.CommitAsync();
+                return order;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         #region Payments

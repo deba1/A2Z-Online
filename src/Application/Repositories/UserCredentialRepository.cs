@@ -12,6 +12,7 @@ namespace Application.Repositories
         Task<UserCredential> LoginUser(string email);
         Task<bool> ChangePassword(int id, string password);
         Task<bool> UpdateLastLogin(int id);
+        Task<UserCredential> GetByEmail(string email);
     }
 
     class UserCredentialRepository : BaseRepository<UserCredential>, IUserCredentialRepository
@@ -21,6 +22,11 @@ namespace Application.Repositories
         public UserCredentialRepository(IAppDbContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<UserCredential> GetByEmail(string email)
+        {
+            return await _context.UserCredentials.FirstOrDefaultAsync(u => u.Email.Equals(email));
         }
 
         #region Login
