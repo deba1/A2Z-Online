@@ -12,8 +12,7 @@ namespace Application.Validators.EntityDTOValidator
                 .Required();
 
             RuleFor(t => t.Gender)
-                .Required()
-                .IsEnumName(typeof(Gender))
+                .IsInEnum()
                 .WithMessage("Invalid Gender");
 
             RuleFor(t => t.DateOfBirth)

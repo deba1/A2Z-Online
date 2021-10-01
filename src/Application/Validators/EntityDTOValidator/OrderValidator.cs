@@ -15,7 +15,8 @@ namespace Application.Validators.EntityDTOValidator
                 .ValidMobileNo();
 
             RuleFor(t => t.DeliveryCharge)
-                .NotEmpty();
+                .Must(t => t >= 0)
+                .WithMessage("Delivery charge can't be negative");
 
             When(t => t.ReturnedOn.HasValue, () =>
             {
@@ -24,11 +25,11 @@ namespace Application.Validators.EntityDTOValidator
                     .WithMessage("Order has not been delivered yet.");
             });
 
-            RuleFor(t => t.Orders)
+            RuleFor(t => t.OrderItems)
                 .NotEmpty()
                 .WithMessage("At least 1 item is required.");
 
-            RuleForEach(t => t.Orders)
+            RuleForEach(t => t.OrderItems)
                 .ChildRules(orderItemRule =>
                 {
                     orderItemRule.RuleFor(t => t.ProductId)
@@ -41,7 +42,6 @@ namespace Application.Validators.EntityDTOValidator
                         .GreaterThan(0)
                         .WithMessage("Quantity is required.");
                 });
-                
         }
     }
 }

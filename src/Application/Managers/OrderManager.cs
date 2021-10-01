@@ -47,10 +47,12 @@ namespace Application.Managers
             using IDbContextTransaction transaction = _transactionService.GetTransaction();
             try
             {
+                var orderItemList = new List<OrderItemDTO>(orderDTO.OrderItems);
+                orderDTO.OrderItems = new List<OrderItemDTO>();
                 Order order = _mapper.Map<Order>(orderDTO);
                 await _orderRepository.Add(order);
 
-                foreach (var item in orderDTO.Orders)
+                foreach (var item in orderItemList)
                 {
                     OrderItem orderItem = _mapper.Map<OrderItem>(item);
                     orderItem.OrderId = order.Id;

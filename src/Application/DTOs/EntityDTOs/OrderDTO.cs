@@ -13,6 +13,6 @@ namespace Application.DTOs.EntityDTOs
         public EnumOrderStatus Status { get; set; }
         public DateTime? DeliveredOn { get; set; }
         public DateTime? ReturnedOn { get; set; }
-        public List<OrderItemDTO> Orders { get; set; }
+        public List<OrderItemDTO> OrderItems { get; set; }
     }
 }

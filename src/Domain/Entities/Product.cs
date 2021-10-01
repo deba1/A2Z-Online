@@ -30,11 +30,14 @@ namespace Domain.Entities
 
         [Required]
         public int BrandId { get; set; }
+        [JsonIgnore]
         public virtual Brand Brand { get; set; }
+        [JsonIgnore]
         public virtual Category Category { get; set; }
        
         [JsonIgnore]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Inventory> Inventories { get; set; }   
     }
 }
