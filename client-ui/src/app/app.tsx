@@ -1,6 +1,6 @@
 import React from "react";
 
-function app() {
+function App() {
   return (
     <div>
       Hello World
@@ -9,4 +9,4 @@ function app() {
   );
 }
 
-export default app;
+export default App;
