@@ -26,7 +26,7 @@ namespace Application.Services
         {
             return Claims = new[] {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString("D")),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.AuthenticationMethod, refreshToken ? "RefreshToken" : "AccessToken")
             };
