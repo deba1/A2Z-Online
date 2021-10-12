@@ -7,6 +7,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Threading.Tasks;
+using Domain.Enums;
 
 namespace Application.Managers
 {
@@ -78,8 +79,8 @@ namespace Application.Managers
 
             LoginResponseDTO loginResponseDTO = new()
             {
-                UserId = userCredential.Id,
-                Role = userCredential.Role,
+                Role = (userCredential.Role == UserRole.Admin) ?
+                    RoleResponseEnum.Admin : RoleResponseEnum.Customer,
                 AccessToken = _authenticationService.CreateToken(userCredential),
                 RefreshToken = refreshToken
             };
