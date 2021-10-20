@@ -1,0 +1,125 @@
+@import url(../commonAuth.css);
+
+.purplecard .innercontent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.purplecard .innercontent .logo{
+    margin-top: 3rem;
+}
+.purplecard .innercontent .logo img{
+    height: 120px;
+    width: 120px;
+}
+
+.purplecard .innercontent .image img{
+    margin-top: 5rem;
+    width: auto;
+    height: 45vh;
+    
+}
+
+.whitecard{
+    box-shadow: inset 3px 0px 5px #5f5e5e;
+}
+.whitecard .roundtitle{
+    box-shadow: inset 3px 0px 5px #5f5e5e;
+    background-image: linear-gradient(35deg, #6F01B0 , #B684FF);
+    padding: 1rem 4rem;
+    display: inline-block;
+    border-radius:0px 50px 50px 0px ;
+    margin-top: 25px;
+    font-size: 1.2rem;
+    color: white;
+}
+
+a{
+    color: #5046AF !important;
+}
+.innercontent{
+    padding: 1rem 8rem;
+}
+.innercontent .head{
+    text-align: center;
+}
+.innercontent h1{
+    color: #5046AF;
+    padding: 0rem;
+    
+}
+.innercontent Form{
+    margin-top: 2rem;
+    color: #5046AF;
+    padding: 0rem 2rem;
+}
+.innercontent Form p{
+    margin-bottom: 0rem;
+}
+
+.innercontent input{
+    margin-top: 0rem;
+    border-bottom: solid #827DDC 1px;
+}
+
+
+.ant-checkbox + span{
+    color:#5046AF;
+}
+
+  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus+.ant-checkbox-inner {
+   
+    border-color: #5046AF !important;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner{
+      background-color: #5046AF !important;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner::after {
+    border-color: #5046AF;    
+  }
+  .ant-btn{
+      border-radius: 5px !important;
+      padding: .5rem 4rem !important;
+      height: 45px !important;
+  }
+  .ant-btn:hover, .ant-btn:focus{
+    color: #6c65b3 !important;
+    border-color: #6c65b3 !important;
+    background: #fff !important;
+  }
+
+.ant-btn-primary {
+    background-color: #594fb4 !important;
+    border-color: #5046AF !important;
+}
+
+.rightallign{
+    text-align: right;
+}
+.line-container{
+    padding: 0rem 7rem;
+    text-align: center;
+}
+
+.line{
+    border-bottom: #5046AF solid 1px;
+    margin-top: 2rem;
+    
+}
+.line-container p{
+    color: #5046AF;
+    margin-top: 1rem;
+}
+.line-container .icons{
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem 2rem;
+}
+.line-container a svg{
+    height: 35px;
+    width: 35px;
+}

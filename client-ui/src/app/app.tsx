@@ -1,10 +1,11 @@
 import React from "react";
+import Login from "../components/pages/auth/login/Login";
+import "../assets/css/style.css"
 
 function App() {
   return (
     <div>
-      Hello World
-      <h1>This is A2Z Client site :3</h1>
+      <Login />
     </div>
   );
 }
