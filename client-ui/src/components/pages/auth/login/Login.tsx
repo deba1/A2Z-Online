@@ -1,7 +1,7 @@
 import "./login.css";
 import { Form, Input, Checkbox, Button, Row, Col } from "antd";
-import logo from "../../../../assets/Logo/Logo.png";
-import image from "../../../../assets/Image/Login.png"
+import Logo from "../../../../assets/Logo/Logo.png";
+import Image from "../../../../assets/Image/Login.png";
 
 function Login() {
   return (
@@ -10,10 +10,10 @@ function Login() {
         <div className="purplecard">
           <div className="innercontent">
             <div className="logo">
-              <img src={logo} alt="Company Logo" />
+              <img src={Logo} alt="Company Logo" />
             </div>
             <div className="image">
-              <img src={image} alt="Login Image" />
+              <img src={Image} alt="Login Image" />
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@ function Login() {
                   <a href="#">Forget Password?</a>
                 </Col>
                 <Col className="rightallign" span={12}>
-                  <a href="#">Creat Account</a>
+                  <a href="#">Create Account</a>
                 </Col>
               </Row>
             </Form>
